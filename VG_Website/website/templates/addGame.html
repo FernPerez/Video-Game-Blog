@@ -2,4 +2,126 @@
 {% block title %}Add Game{% endblock %}
 {% block content %}
 <h1>Add a Game</h1>
+<form method="POST">
+    <h3 align="center">Enter game information:</h3>
+    <div class="form-group">
+        <br></br>
+        <label for="title">Title *</label>
+        <input 
+            type="text" 
+            class="form-control" 
+            id="title" 
+            name="title" 
+            placeholder="Enter title."
+        />
+        <label for="platforms">Platforms *</label>
+        <input 
+            type="text" 
+            class="form-control" 
+            id="platforms" 
+            name="platforms" 
+            placeholder="Enter list of platforms."
+        />
+        <br></br>
+        <label for="genre1">Genre 1 *</label>
+        <select class="form-control" name="genre1" id="genre1">
+            <option value="Action">Action</option>
+            <option value="Adventure">Adventure</option>
+            <option value="Fighting">Fighting</option>
+            <option value="Open World">Open World</option>
+            <option value="RPG">RPG</option>
+            <option value="JRPG">JRPG</option>
+            <option value="Sim">Simulation</option>
+            <option value="Shpoter">Shooter</option>
+            <option value="Strategy">Strategy</option>
+            <option value="Turn-based">Turn-based</option>
+            <option value="Visual Novel">Visual Novel</option>
+        </select>
+        <label for="genre2">Genre 2</label>
+        <select class="form-control" name="genre2" id="genre2">
+            <option value="N/A">N/A</option>
+            <option value="Action">Action</option>
+            <option value="Adventure">Adventure</option>
+            <option value="Fighting">Fighting</option>
+            <option value="Open World">Open World</option>
+            <option value="RPG">RPG</option>
+            <option value="JRPG">JRPG</option>
+            <option value="Sim">Simulation</option>
+            <option value="Shpoter">Shooter</option>
+            <option value="Strategy">Strategy</option>
+            <option value="Turn-based">Turn-based</option>
+            <option value="Visual Novel">Visual Novel</option>
+        </select>
+        <label for="genre3">Genre 3</label>
+        <select class="form-control" name="genre3" id="genre3">
+            <option value="N/A">N/A</option>
+            <option value="Action">Action</option>
+            <option value="Adventure">Adventure</option>
+            <option value="Fighting">Fighting</option>
+            <option value="Open World">Open World</option>
+            <option value="RPG">RPG</option>
+            <option value="JRPG">JRPG</option>
+            <option value="Sim">Simulation</option>
+            <option value="Shpoter">Shooter</option>
+            <option value="Strategy">Strategy</option>
+            <option value="Turn-based">Turn-based</option>
+            <option value="Visual Novel">Visual Novel</option>
+        </select>
+        <br></br>
+        <label for="releaseDate">Release Date *</label>
+        <input 
+            type="date" 
+            class="form-control" 
+            id="releaseDate" 
+            name="releaseDate" 
+        />
+        <label for="dateStarted">Date Started *</label>
+        <input 
+            type="date" 
+            class="form-control" 
+            id="dateStarted" 
+            name="dateStarted" 
+        />
+        <label for="dateFinished">Date Finished</label>
+        <input 
+            type="date" 
+            class="form-control" 
+            id="dateFinished" 
+            name="dateFinished" 
+        />
+        <br></br>
+        <label for="description">Description</label>
+        <textarea 
+            type="text" 
+            class="form-control" 
+            id="description" 
+            name="description" 
+            placeholder="Enter brief description."
+        ></textarea>
+        <label for="score">Score *</label>
+        <input 
+            type="number" 
+            class="form-control" 
+            id="score" 
+            name="score"
+            min="0"
+            max="10"
+            step="0.1" 
+            placeholder="0"
+            value="0"
+        />
+        <br></br>
+        <label for="gameCover">Game Cover</label>
+        <input 
+            type="file" 
+            class="form-control" 
+            id="gameCover" 
+            name="gameCover" 
+        />
+        <br></br>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+    <br></br>
+</form>
 {% endblock %}
+
