@@ -100,4 +100,14 @@ def addGame():
 
 @views.route("/games", methods=["GET"])
 def games():
-    return render_template("games.html")
+    gameList = Game.query.order_by(Game.releaseDate)
+    return render_template("games.html", games=gameList)
+
+@views.route("/games/<title>")
+def game(title):
+    game = Game.query.filter_by(title=title).first_or_404()
+    posts = [
+        {'author': game, 'body': 'Test post #1'},
+        {'author': game, 'body': 'Test post #2'}
+    ]
+    return render_template('game.html', game=game, posts=posts)

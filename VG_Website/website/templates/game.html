@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}{{ game.title }}{% endblock %}
+{% block content %}
+<h1>{{ game.title }}</h1>
+<h5>Platforms: {{ game.platforms }}</h5>
+<h5>Release date: {{ game.releaseDate }}</h5>
+<h6>Genre(s): {{ game.genre1 }}, {{ game.genre2 }}, {{ game.genre3 }}</h6>
+<div>
+    <img src="../static/images/{{ game.gameCover }}" class="dashboard">
+</div>
+<h5>Series: {{ game.series }}</h5>
+<h5>Franchise: {{ game.franchise }}</h5>
+<h5>Date Started: {{ game.dateStarted }}</h5>
+<h5>Date Finished: {{ game.dateFinished }}</h5>
+<h4>Score: {{ game.score }}</h4>
+<h6>Description: {{ game.description }}</h6>
+{% endblock %}
