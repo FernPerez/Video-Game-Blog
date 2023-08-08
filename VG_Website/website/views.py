@@ -99,6 +99,10 @@ def addGame():
 @views.route("/games", methods=["GET", "POST"])
 def games():
     gameList = Game.query
+    filteredList = []
+
+    for game in gameList:
+        filteredList.append(game)
     if request.method == 'POST':
         data = request.form
         print(data)
@@ -106,11 +110,24 @@ def games():
         sort_by = request.form.get("sorter")
         order = request.form.get("order")
         system = request.form.get("platform_select")
-        if system == "All":
-            return render_template("games.html", games=gameList, sort_by=sort_by, order=order) 
-        else:
-            gameList = Game.query.filter_by(platforms=system)
-            return render_template("games.html", games=gameList, sort_by=sort_by, order=order) 
+
+        listLength = len(filteredList)
+        i = 0
+        while i < listLength:
+            if system == "NES" and "SNES" in filteredList[i].platforms:
+                del filteredList[i]
+                listLength -= 1
+            elif system != "All" and system not in filteredList[i].platforms:
+                del filteredList[i]
+                listLength -= 1
+            else:
+                i += 1
+
+        # if system == "All":
+        #     return render_template("games.html", games=gameList, sort_by=sort_by, order=order) 
+        # else:
+        #     gameList = Game.query.filter_by(platforms=system)
+        return render_template("games.html", games=filteredList, sort_by=sort_by, order=order) 
     return render_template("games.html", games=gameList, sort_by="default", order="default")
 
 @views.route("/games/<title>")

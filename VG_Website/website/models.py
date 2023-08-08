@@ -16,3 +16,4 @@ class Game(db.Model):
     description = db.Column(db.String(5000), nullable=True)
     score = db.Column(db.Float, nullable=False)
     gameCover = db.Column(db.String(), unique=True, nullable=True)
+    gameMusic = db.Column(db.String(), nullable=True)

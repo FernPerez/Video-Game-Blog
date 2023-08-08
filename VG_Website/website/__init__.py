@@ -1,6 +1,7 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from os import path
+from flask_migrate import Migrate
 
 db = SQLAlchemy()
 DB_NAME = "database.db"
@@ -14,6 +15,8 @@ def create_app():
     
     UPLOAD_FOLDER = 'website/static/images/'
     app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+    migrate = Migrate(app, db, render_as_batch=True)
 
     from .views import views
     from .auth import auth
