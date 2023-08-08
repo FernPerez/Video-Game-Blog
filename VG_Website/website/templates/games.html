@@ -2,9 +2,66 @@
 {% block title %}My Games{% endblock %}
 {% block content %}
 <h1>My Games</h1>
+<form method="POST" id="filters">
+    <select class="form-control" name="sorter" id="sorter">
+            <option value="title">Title</option>
+            <option value="releaseDate">Release Date</option>
+            <option value="score">Score</option>
+    </select>
+    <select class="form-control" name="order" id="order">
+        <option value="desc">Descending</option>
+        <option value="asc">Ascending</option>
+    </select>
+    <select class="form-control" name="platform_select" id="platform_select">
+        <option value="All">All</option>
+        <option value="NES">NES</option>
+        <option value="SNES">SNES</option>
+        <option value="PS1">PS1</option>
+    </select>
+</form>
+<button class="btn btn-primary" id="reset">Reset</button>
+<br/>
 <ul class="list-group list-group-flush" id="games">
-    {% for game in games %}
-        <li><a class="nav-item nav-link" href="/games/{{ game.title }}">{{ game.title }}</a></li>
-    {% endfor %}
+    {% if sort_by == "default" and order == "default" %}
+        {% for game in games | sort(attribute='releaseDate', reverse=True) %}
+            <li><a class="nav-item nav-link" href="/games/{{ game.title }}">{{ game.title }}</a></li>
+        {% endfor %}
+    {% elif order == "asc" %}
+        {% for game in games | sort(attribute=sort_by, reverse=False) %}
+            <li><a class="nav-item nav-link" href="/games/{{ game.title }}">{{ game.title }}</a></li>
+        {% endfor %}
+    {% else %}      
+        {% for game in games | sort(attribute=sort_by, reverse=True) %}
+            <li><a class="nav-item nav-link" href="/games/{{ game.title }}">{{ game.title }}</a></li>
+        {% endfor %}  
+    {% endif %}
 </ul>
+<script>
+    document.getElementById('sorter').onchange = function() {
+        localStorage.setItem('selectedSort', document.getElementById('sorter').value);
+        document.getElementById("filters").submit();
+    };
+    document.getElementById('order').onchange = function() {
+        localStorage.setItem('selectedOrder', document.getElementById('order').value);
+        document.getElementById("filters").submit();
+    };
+    document.getElementById('platform_select').onchange = function() {
+        localStorage.setItem('selectedPlatform', document.getElementById('platform_select').value);
+        document.getElementById("filters").submit();
+    };
+    document.getElementById('reset').onclick = function() {
+        localStorage.setItem('selectedSort', document.getElementById('sorter').value = "title");
+        localStorage.setItem('selectedOrder', document.getElementById('order').value = "desc");
+        localStorage.setItem('selectedPlatform', document.getElementById('platform_select').value = "All");
+        document.getElementById("filters").submit()
+    };
+
+    window.onload = function() {
+        document.getElementById("order").value = localStorage.getItem('selectedOrder');
+        document.getElementById("sorter").value = localStorage.getItem('selectedSort');
+        document.getElementById("platform_select").value = localStorage.getItem('selectedPlatform');
+    };
+
+</script>
 {% endblock %}
+

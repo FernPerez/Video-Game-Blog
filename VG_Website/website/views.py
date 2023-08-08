@@ -34,34 +34,12 @@ def addGame():
         score = request.form.get('score')
         gameCover = request.files.get('gameCover')
 
-        releaseDate = datetime.strptime(releaseDate, '%Y-%m-%d')
-        releaseDate = releaseDate.date()
-        dateStarted = datetime.strptime(dateStarted, '%Y-%m-%d')
-        dateStarted = dateStarted.date()
-        dateFinished = datetime.strptime(dateFinished, '%Y-%m-%d')
-        dateFinished = dateFinished.date()
-
-        # Convert blanks to None (NULL in db)
-        if series == '':
-            series = None
-        if franchise == '':
-            franchise == None
-        if genre2 == 'N/A':
-            genre2 = None
-        if genre3 == 'N/A':
-            genre3 = None
-        if gameCover == '':
-            gameCover = None
-        else:
-            gameCoverName = secure_filename(gameCover.filename)
-            gameCoverName = str(uuid.uuid1()) + "_" + gameCoverName
-
         # Check validity of inputs and flash messages
         if len(title) < 1:
             flash("Title must be greater than 1 character.", category='error')
         elif len(platforms) < 1:
             flash("Platforms entry must be at least 1 character.", category='error')
-        elif genre2 == genre1 or genre3 == genre1 or (genre2 == genre3 and genre2 != None):
+        elif genre2 == genre1 or genre3 == genre1 or (genre2 == genre3 and genre2 != 'N/A'):
             flash("Cannot have two of the same genre.", category='error')
         elif releaseDate == '':
             flash('Must enter release date.', category='error')
@@ -70,10 +48,30 @@ def addGame():
         elif len(description) > 5000:
             flash('Description cannot be longer than 5000 characters.', category='error')
         else:
+            #Convert html dates to Python dates
+            releaseDate = datetime.strptime(releaseDate, '%Y-%m-%d')
+            releaseDate = releaseDate.date()
+            dateStarted = datetime.strptime(dateStarted, '%Y-%m-%d')
+            dateStarted = dateStarted.date()
+            dateFinished = datetime.strptime(dateFinished, '%Y-%m-%d')
+            dateFinished = dateFinished.date()
+
+            # Convert blanks to None (NULL in db)
+            if series == '':
+                series = None
+            if franchise == '':
+                franchise == None
+            if genre2 == 'N/A':
+                genre2 = None
+            if genre3 == 'N/A':
+                genre3 = None
+            if gameCover == '':
+                gameCover = None
+            else:
+                gameCoverName = secure_filename(gameCover.filename)
+                gameCoverName = str(uuid.uuid1()) + "_" + gameCoverName
+
             #add game to db
-            print(data)
-            print(gameCover)
-            print(os.getcwd())
             new_game = Game(
                 title = title,
                 platforms = platforms,
@@ -98,10 +96,22 @@ def addGame():
 
     return render_template("addGame.html")
 
-@views.route("/games", methods=["GET"])
+@views.route("/games", methods=["GET", "POST"])
 def games():
-    gameList = Game.query.order_by(Game.releaseDate)
-    return render_template("games.html", games=gameList)
+    gameList = Game.query
+    if request.method == 'POST':
+        data = request.form
+        print(data)
+
+        sort_by = request.form.get("sorter")
+        order = request.form.get("order")
+        system = request.form.get("platform_select")
+        if system == "All":
+            return render_template("games.html", games=gameList, sort_by=sort_by, order=order) 
+        else:
+            gameList = Game.query.filter_by(platforms=system)
+            return render_template("games.html", games=gameList, sort_by=sort_by, order=order) 
+    return render_template("games.html", games=gameList, sort_by="default", order="default")
 
 @views.route("/games/<title>")
 def game(title):
