@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, flash, current_app
+from flask import Blueprint, render_template, request, flash, current_app, redirect, url_for
 from .models import Game
 from . import db
 from werkzeug.utils import secure_filename
@@ -123,18 +123,21 @@ def games():
             else:
                 i += 1
 
-        # if system == "All":
-        #     return render_template("games.html", games=gameList, sort_by=sort_by, order=order) 
-        # else:
-        #     gameList = Game.query.filter_by(platforms=system)
         return render_template("games.html", games=filteredList, sort_by=sort_by, order=order) 
+    
     return render_template("games.html", games=gameList, sort_by="default", order="default")
 
-@views.route("/games/<title>")
+@views.route("/games/<title>", methods = ["GET", "POST"])
 def game(title):
     game = Game.query.filter_by(title=title).first_or_404()
-    posts = [
-        {'author': game, 'body': 'Test post #1'},
-        {'author': game, 'body': 'Test post #2'}
-    ]
-    return render_template('game.html', game=game, posts=posts)
+    if request.method == "POST":
+        return redirect(url_for('views.updateGame', title=game.title))
+
+    return render_template('game.html', game=game)
+
+@views.route("/games/<title>/update", methods = ["GET", "POST"])
+def updateGame(title):
+    game = Game.query.filter_by(title=title).first_or_404()
+    
+
+    return render_template('update_game.html', game=game)
