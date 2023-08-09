@@ -5,6 +5,7 @@ from werkzeug.utils import secure_filename
 import uuid as uuid
 import os
 from datetime import datetime
+import json
 
 views = Blueprint('views', __name__)
 
@@ -53,8 +54,11 @@ def addGame():
             releaseDate = releaseDate.date()
             dateStarted = datetime.strptime(dateStarted, '%Y-%m-%d')
             dateStarted = dateStarted.date()
-            dateFinished = datetime.strptime(dateFinished, '%Y-%m-%d')
-            dateFinished = dateFinished.date()
+            try:
+                dateFinished = datetime.strptime(dateFinished, '%Y-%m-%d')
+                dateFinished = dateFinished.date()
+            except:
+                dateFinished = None
 
             # Convert blanks to None (NULL in db)
             if series == '':
@@ -87,7 +91,8 @@ def addGame():
                 score = score,
                 gameCover = gameCoverName
             )
-            gameCover.save(os.path.join(current_app.config["UPLOAD_FOLDER"], gameCoverName))
+            if gameCover != None:
+                gameCover.save(os.path.join(current_app.config["UPLOAD_FOLDER"], gameCoverName))
             db.session.add(new_game)
             db.session.commit()
             flash('Game added!', category='success')
@@ -104,12 +109,14 @@ def games():
     for game in gameList:
         filteredList.append(game)
     if request.method == 'POST':
-        data = request.form
-        print(data)
+        # data = request.form
+        # print(data)
 
         sort_by = request.form.get("sorter")
         order = request.form.get("order")
         system = request.form.get("platform_select")
+        franchise = request.form.get("franchise_select")
+        series = request.form.get("series_select")
 
         listLength = len(filteredList)
         i = 0
@@ -120,6 +127,12 @@ def games():
             elif system != "All" and system not in filteredList[i].platforms:
                 del filteredList[i]
                 listLength -= 1
+            elif franchise != 'All' and franchise != filteredList[i].franchise:
+                del filteredList[i]
+                listLength -= 1
+            elif series != 'All' and series != filteredList[i].series:
+                del filteredList[i]
+                listLength -= 1            
             else:
                 i += 1
 
@@ -137,7 +150,204 @@ def game(title):
 
 @views.route("/games/<title>/update", methods = ["GET", "POST"])
 def updateGame(title):
-    game = Game.query.filter_by(title=title).first_or_404()
-    
+    gameToUpdate = Game.query.filter_by(title=title).first_or_404()
+    if request.method == "POST":
+        newTitle = request.form.get("title")
+        newPlatforms = request.form.get("platforms")
+        newSeries = request.form.get("series")
+        newFranchise = request.form.get("franchise")
+        newGenre1 = request.form.get("genre1")
+        newGenre2 = request.form.get("genre2")
+        newGenre3 = request.form.get("genre3")
+        newRelease = request.form.get('releaseDate')
+        newDS = request.form.get('dateStarted')
+        newDF = request.form.get('dateFinished')
+        newDesc = request.form.get('description')
+        newScore = request.form.get('score')
 
-    return render_template('update_game.html', game=game)
+        # Check validity of inputs and flash messages
+        if len(newTitle) < 1:
+            flash("Title must be greater than 1 character.", category='error')
+        elif len(newPlatforms) < 1:
+            flash("Platforms entry must be at least 1 character.", category='error')
+        elif newGenre2 == newGenre1 or newGenre3 == newGenre1 or (newGenre2 == newGenre3 and newGenre2 != 'N/A'):
+            flash("Cannot have two of the same genre.", category='error')
+        elif newRelease == '':
+            flash('Must enter release date.', category='error')
+        elif newDS == '':
+            flash('Must enter date started.', category='error')
+        elif len(newDesc) > 5000:
+            flash('Description cannot be longer than 5000 characters.', category='error')
+        else:
+
+            # Convert html dates to Python dates
+            newRelease = datetime.strptime(newRelease, '%Y-%m-%d')
+            newRelease = newRelease.date()
+            newDS = datetime.strptime(newDS, '%Y-%m-%d')
+            newDS = newDS.date()
+            try:
+                newDF = datetime.strptime(newDF, '%Y-%m-%d')
+                newDF = newDF.date()
+            except:
+                newDF = None
+
+            # Convert blanks to None (NULL in db)
+            if newSeries == '':
+                newSeries = None
+            if newFranchise == '':
+                newFranchise == None
+            if newGenre2 == 'N/A':
+                newGenre2 = None
+            if newGenre3 == 'N/A':
+                newGenre3 = None
+
+
+            # Update values
+            gameToUpdate.title = newTitle
+            gameToUpdate.platforms = newPlatforms
+            gameToUpdate.series = newSeries
+            gameToUpdate.franchise = newFranchise
+            gameToUpdate.genre1 = newGenre1
+            gameToUpdate.genre2 = newGenre2
+            gameToUpdate.genre3 = newGenre3
+            gameToUpdate.releaseDate = newRelease
+            gameToUpdate.dateStarted = newDS
+            gameToUpdate.dateFinished = newDF
+            gameToUpdate.description = newDesc
+            gameToUpdate.score = newScore
+
+            # Check if game cover or music has been updated, skip if not
+            newGameCoverName = ''
+            newGameMusicName = ''
+            if request.files.get('gameCover') and request.files.get('gameCover').filename != gameToUpdate.gameCover:
+                newGameCoverName = request.files.get('gameCover').filename
+                newGameCoverName = secure_filename(newGameCoverName)
+                newGameCoverName = str(uuid.uuid1()) + "_" + newGameCoverName
+                gameToUpdate.gameCover = newGameCoverName
+
+            if request.files.get('gameMusic') and request.files.get('gameMusic').filename != gameToUpdate.gameMusic:
+                newGameMusicName = request.files.get('gameMusic').filename
+                newGameMusicName = secure_filename(newGameMusicName)
+                newGameMusicName = str(uuid.uuid1()) + "_" + newGameMusicName
+                gameToUpdate.gameMusic = newGameMusicName        
+
+            # Save new files
+            try:
+                if newGameCoverName != '':
+                    request.files.get('gameCover').save(os.path.join(current_app.config["UPLOAD_FOLDER"], newGameCoverName))
+                if newGameMusicName != '':
+                    request.files.get('gameMusic').save(os.path.join(current_app.config["UPLOAD_FOLDER"], newGameMusicName))
+
+                db.session.commit()
+                flash("Success!", category="success")
+                return redirect(url_for('views.game', title=gameToUpdate.title))
+            except:
+                flash("Error", category="error")
+
+    genres = [gameToUpdate.genre1, gameToUpdate.genre2, gameToUpdate.genre3]
+    return render_template('update_game.html', game=gameToUpdate, genres=json.dumps(genres))
+
+# Functions below allow renaming an entry in the db if it has no title.
+
+# @views.route("/games/X2", methods = ["GET", "POST"])
+# def X2():
+#     game = Game.query.filter_by(id=2).first_or_404()
+#     if request.method == "POST":
+#         return redirect(url_for('views.updateX2'))
+
+#     return render_template('game.html', game=game)
+
+# @views.route("/games/X2/update", methods = ["GET", "POST"])
+# def updateX2():
+#     gameToUpdate = Game.query.filter_by(id=2).first_or_404()
+#     if request.method == "POST":
+#         newTitle = request.form.get("title")
+#         newPlatforms = request.form.get("platforms")
+#         newSeries = request.form.get("series")
+#         newFranchise = request.form.get("franchise")
+#         newGenre1 = request.form.get("genre1")
+#         newGenre2 = request.form.get("genre2")
+#         newGenre3 = request.form.get("genre3")
+#         newRelease = request.form.get('releaseDate')
+#         newDS = request.form.get('dateStarted')
+#         newDF = request.form.get('dateFinished')
+#         newDesc = request.form.get('description')
+#         newScore = request.form.get('score')
+
+#         # Check validity of inputs and flash messages
+#         if len(newTitle) < 1:
+#             flash("Title must be greater than 1 character.", category='error')
+#         elif len(newPlatforms) < 1:
+#             flash("Platforms entry must be at least 1 character.", category='error')
+#         elif newGenre2 == newGenre1 or newGenre3 == newGenre1 or (newGenre2 == newGenre3 and newGenre2 != 'N/A'):
+#             flash("Cannot have two of the same genre.", category='error')
+#         elif newRelease == '':
+#             flash('Must enter release date.', category='error')
+#         elif newDS == '':
+#             flash('Must enter date started.', category='error')
+#         elif len(newDesc) > 5000:
+#             flash('Description cannot be longer than 5000 characters.', category='error')
+#         else:
+
+#             # Convert html dates to Python dates
+#             newRelease = datetime.strptime(newRelease, '%Y-%m-%d')
+#             newRelease = newRelease.date()
+#             newDS = datetime.strptime(newDS, '%Y-%m-%d')
+#             newDS = newDS.date()
+#             newDF = datetime.strptime(newDF, '%Y-%m-%d')
+#             newDF = newDF.date()
+
+#             # Convert blanks to None (NULL in db)
+#             if newSeries == '':
+#                 newSeries = None
+#             if newFranchise == '':
+#                 newFranchise == None
+#             if newGenre2 == 'N/A':
+#                 newGenre2 = None
+#             if newGenre3 == 'N/A':
+#                 newGenre3 = None
+
+
+#             # Update values
+#             gameToUpdate.title = newTitle
+#             gameToUpdate.platforms = newPlatforms
+#             gameToUpdate.series = newSeries
+#             gameToUpdate.franchise = newFranchise
+#             gameToUpdate.genre1 = newGenre1
+#             gameToUpdate.genre2 = newGenre2
+#             gameToUpdate.genre3 = newGenre3
+#             gameToUpdate.releaseDate = newRelease
+#             gameToUpdate.dateStarted = newDS
+#             gameToUpdate.dateFinished = newDF
+#             gameToUpdate.description = newDesc
+#             gameToUpdate.score = newScore
+
+#             # Check if game cover or music has been updated, skip if not
+#             newGameCoverName = ''
+#             newGameMusicName = ''
+#             if request.files.get('gameCover') and request.files.get('gameCover').filename != gameToUpdate.gameCover:
+#                 newGameCoverName = request.files.get('gameCover').filename
+#                 newGameCoverName = secure_filename(newGameCoverName)
+#                 newGameCoverName = str(uuid.uuid1()) + "_" + newGameCoverName
+#                 gameToUpdate.gameCover = newGameCoverName
+
+#             if request.files.get('gameMusic') and request.files.get('gameMusic').filename != gameToUpdate.gameMusic:
+#                 newGameMusicName = request.files.get('gameMusic').filename
+#                 newGameMusicName = secure_filename(newGameMusicName)
+#                 newGameMusicName = str(uuid.uuid1()) + "_" + newGameMusicName
+#                 gameToUpdate.gameMusic = newGameMusicName        
+
+#             # Save new files
+#             try:
+#                 if newGameCoverName != '':
+#                     request.files.get('gameCover').save(os.path.join(current_app.config["UPLOAD_FOLDER"], newGameCoverName))
+#                 if newGameMusicName != '':
+#                     request.files.get('gameMusic').save(os.path.join(current_app.config["UPLOAD_FOLDER"], newGameMusicName))
+
+#                 db.session.commit()
+#                 flash("Success!", category="success")
+#                 return redirect(url_for('views.game', title=gameToUpdate.title))
+#             except:
+#                 flash("Error", category="error")
+
+#     return render_template('update_game.html', game=gameToUpdate)

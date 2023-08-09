@@ -3,27 +3,42 @@
 {% block content %}
 <h1>My Games</h1>
 <form method="POST" id="filters">
+    <label for="Sort">Sort by:</label>
     <select class="form-control" name="sorter" id="sorter">
             <option value="title">Title</option>
             <option value="releaseDate">Release Date</option>
             <option value="score">Score</option>
+            <option value="dateStarted">Date Started</option>
     </select>
+    <label for="Order">Order: </label>
     <select class="form-control" name="order" id="order">
         <option value="desc">Descending</option>
         <option value="asc">Ascending</option>
     </select>
+    <label for="Platform">Platform</label>
     <select class="form-control" name="platform_select" id="platform_select">
         <option value="All">All</option>
         <option value="NES">NES</option>
         <option value="SNES">SNES</option>
         <option value="PS1">PS1</option>
     </select>
+    <label for="Franchise">Franchise</label>
+    <select class="form-control" name="franchise_select" id="franchise_select">
+        <option value="All">All</option>
+        <option value="Mega Man">Mega Man</option>
+    </select>
+    <label for="Series">Series</label>
+    <select class="form-control" name="series_select" id="series_select">
+        <option value="All">All</option>
+        <option value="Mega Man X">Mega Man X</option>
+    </select>
+    <br/>
 </form>
 <button class="btn btn-primary" id="reset">Reset</button>
-<br/>
+<br/><br/>
 <ul class="list-group list-group-flush" id="games">
     {% if sort_by == "default" and order == "default" %}
-        {% for game in games | sort(attribute='releaseDate', reverse=True) %}
+        {% for game in games | sort(attribute='title', reverse=False) %}
             <li><a class="nav-item nav-link" href="/games/{{ game.title }}">{{ game.title }}</a></li>
         {% endfor %}
     {% elif order == "asc" %}
@@ -49,17 +64,39 @@
         localStorage.setItem('selectedPlatform', document.getElementById('platform_select').value);
         document.getElementById("filters").submit();
     };
+    document.getElementById('franchise_select').onchange = function() {
+        localStorage.setItem('selectedFranchise', document.getElementById('franchise_select').value);
+        document.getElementById("filters").submit();
+    };
+    document.getElementById('series_select').onchange = function() {
+        localStorage.setItem('selectedSeries', document.getElementById('series_select').value);
+        document.getElementById("filters").submit();
+    };
     document.getElementById('reset').onclick = function() {
         localStorage.setItem('selectedSort', document.getElementById('sorter').value = "title");
-        localStorage.setItem('selectedOrder', document.getElementById('order').value = "desc");
+        localStorage.setItem('selectedOrder', document.getElementById('order').value = "asc");
         localStorage.setItem('selectedPlatform', document.getElementById('platform_select').value = "All");
+        localStorage.setItem('selectedFranchise', document.getElementById('franchise_select').value = "All");
+        localStorage.setItem('selectedSeries', document.getElementById('series_select').value = "All");
         document.getElementById("filters").submit()
     };
 
     window.onload = function() {
-        document.getElementById("order").value = localStorage.getItem('selectedOrder');
-        document.getElementById("sorter").value = localStorage.getItem('selectedSort');
-        document.getElementById("platform_select").value = localStorage.getItem('selectedPlatform');
+        if('{{ sort_by }}' != "default"){
+            console.log("test");
+            document.getElementById("order").value = localStorage.getItem('selectedOrder');
+            document.getElementById("sorter").value = localStorage.getItem('selectedSort');
+            document.getElementById("platform_select").value = localStorage.getItem('selectedPlatform');
+            document.getElementById("franchise_select").value = localStorage.getItem('selectedFranchise');
+            document.getElementById("series_select").value = localStorage.getItem('selectedSeries');
+        }
+        else {
+            localStorage.setItem('selectedSort', document.getElementById('sorter').value = "title");
+            localStorage.setItem('selectedOrder', document.getElementById('order').value = "asc");
+            localStorage.setItem('selectedPlatform', document.getElementById('platform_select').value = "All");
+            localStorage.setItem('selectedFranchise', document.getElementById('franchise_select').value = "All");
+            localStorage.setItem('selectedSeries', document.getElementById('series_select').value = "All");
+        };
     };
 
 </script>
