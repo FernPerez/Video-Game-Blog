@@ -4,7 +4,13 @@
 <h1>{{ game.title }}</h1>
 <h5>Platforms: {{ game.platforms }}</h5>
 <h5>Release date: {{ game.releaseDate }}</h5>
-<h6>Genre(s): {{ game.genre1 }}, {{ game.genre2 }}, {{ game.genre3 }}</h6>
+<h6>Genre(s): {{ game.genre1.replace('_', ' ') }}
+    {% if game.genre2 != "" %}
+    / {{ game.genre2.replace('_', ' ')  }}
+    {% endif %}
+    {% if game.genre3 != ""%}
+    / {{ game.genre3.replace('_', ' ')  }}
+    {% endif %}</h6>
 <div>
     <img src="../static/images/{{ game.gameCover }}" class="dashboard">
 </div>

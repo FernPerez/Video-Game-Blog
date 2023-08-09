@@ -66,9 +66,9 @@ def addGame():
             if franchise == '':
                 franchise == None
             if genre2 == 'N/A':
-                genre2 = None
+                genre2 = ''
             if genre3 == 'N/A':
-                genre3 = None
+                genre3 = ''
             if gameCover == '':
                 gameCover = None
             else:
@@ -197,9 +197,9 @@ def updateGame(title):
             if newFranchise == '':
                 newFranchise == None
             if newGenre2 == 'N/A':
-                newGenre2 = None
+                newGenre2 = ''
             if newGenre3 == 'N/A':
-                newGenre3 = None
+                newGenre3 = ''
 
 
             # Update values
