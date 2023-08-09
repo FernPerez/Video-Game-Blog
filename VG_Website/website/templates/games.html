@@ -3,6 +3,16 @@
 {% block content %}
 <h1>My Games</h1>
 <form method="POST" id="filters">
+    <label for="Search">Search:</label>
+    <input 
+    type="text" 
+    class="form-control" 
+    id="searchbar" 
+    name="searchbar" 
+    placeholder="Search"
+    onkeydown="search(this)"
+    autocomplete="off"
+    />
     <label for="Sort">Sort by:</label>
     <select class="form-control" name="sorter" id="sorter">
             <option value="title">Title</option>
@@ -71,7 +81,15 @@
         {% endfor %}  
     {% endif %}
 </ul>
+<br /><br />
 <script>
+    function search(ele) {
+        if(event.key == 'Enter'){
+            localStorage.setItem('searchParam', document.getElementById('searchbar').value);
+            document.getElementById("filters").submit();
+        };
+    };
+
     document.getElementById('sorter').onchange = function() {
         localStorage.setItem('selectedSort', document.getElementById('sorter').value);
         document.getElementById("filters").submit();
@@ -97,6 +115,7 @@
         document.getElementById("filters").submit();
     };
     document.getElementById('reset').onclick = function() {
+        localStorage.setItem('searchParam', document.getElementById('searchbar').value = "");
         localStorage.setItem('selectedSort', document.getElementById('sorter').value = "title");
         localStorage.setItem('selectedOrder', document.getElementById('order').value = "asc");
         localStorage.setItem('selectedPlatform', document.getElementById('platform_select').value = "All");
@@ -108,7 +127,7 @@
 
     window.onload = function() {
         if('{{ sort_by }}' != "default"){
-            console.log("test");
+            document.getElementById("searchbar").value = localStorage.getItem('searchParam');
             document.getElementById("order").value = localStorage.getItem('selectedOrder');
             document.getElementById("sorter").value = localStorage.getItem('selectedSort');
             document.getElementById("platform_select").value = localStorage.getItem('selectedPlatform');
@@ -117,6 +136,7 @@
             document.getElementById("genre_select").value = localStorage.getItem('selectedGenre');
         }
         else {
+            localStorage.setItem('searchParam', document.getElementById('searchbar').value = "");
             localStorage.setItem('selectedSort', document.getElementById('sorter').value = "title");
             localStorage.setItem('selectedOrder', document.getElementById('order').value = "asc");
             localStorage.setItem('selectedPlatform', document.getElementById('platform_select').value = "All");

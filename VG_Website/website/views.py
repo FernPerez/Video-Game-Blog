@@ -69,8 +69,9 @@ def addGame():
                 genre2 = ''
             if genre3 == 'N/A':
                 genre3 = ''
-            if gameCover == '':
+            if gameCover.filename == '':
                 gameCover = None
+                gameCoverName = None
             else:
                 gameCoverName = secure_filename(gameCover.filename)
                 gameCoverName = str(uuid.uuid1()) + "_" + gameCoverName
@@ -112,6 +113,7 @@ def games():
         # data = request.form
         # print(data)
 
+        search = request.form.get("searchbar")
         sort_by = request.form.get("sorter")
         order = request.form.get("order")
         system = request.form.get("platform_select")
@@ -122,7 +124,10 @@ def games():
         listLength = len(filteredList)
         i = 0
         while i < listLength:
-            if system == "NES" and "SNES" in filteredList[i].platforms:
+            if search != "" and search not in filteredList[i].title:
+                del filteredList[i]
+                listLength -= 1                
+            elif system == "NES" and "SNES" in filteredList[i].platforms:
                 del filteredList[i]
                 listLength -= 1
             elif system != "All" and system not in filteredList[i].platforms:
@@ -155,6 +160,7 @@ def game(title):
 @views.route("/games/<title>/update", methods = ["GET", "POST"])
 def updateGame(title):
     gameToUpdate = Game.query.filter_by(title=title).first_or_404()
+    print(gameToUpdate.gameMusic)
     if request.method == "POST":
         newTitle = request.form.get("title")
         newPlatforms = request.form.get("platforms")
@@ -229,7 +235,9 @@ def updateGame(title):
                 newGameCoverName = str(uuid.uuid1()) + "_" + newGameCoverName
                 gameToUpdate.gameCover = newGameCoverName
 
+            print(request.files.get('gameMusic').filename)
             if request.files.get('gameMusic') and request.files.get('gameMusic').filename != gameToUpdate.gameMusic:
+                print("test2")
                 newGameMusicName = request.files.get('gameMusic').filename
                 newGameMusicName = secure_filename(newGameMusicName)
                 newGameMusicName = str(uuid.uuid1()) + "_" + newGameMusicName
@@ -238,9 +246,9 @@ def updateGame(title):
             # Save new files
             try:
                 if newGameCoverName != '':
-                    request.files.get('gameCover').save(os.path.join(current_app.config["UPLOAD_FOLDER"], newGameCoverName))
+                    request.files.get('gameCover').save(os.path.join(current_app.config["UPLOAD_FOLDER"], f'images/{newGameCoverName}'))
                 if newGameMusicName != '':
-                    request.files.get('gameMusic').save(os.path.join(current_app.config["UPLOAD_FOLDER"], newGameMusicName))
+                    request.files.get('gameMusic').save(os.path.join(current_app.config["UPLOAD_FOLDER"], f'music/{newGameMusicName}'))
 
                 db.session.commit()
                 flash("Success!", category="success")

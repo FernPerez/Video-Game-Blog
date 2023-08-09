@@ -13,7 +13,7 @@ def create_app():
     app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
     db.init_app(app)
     
-    UPLOAD_FOLDER = 'website/static/images/'
+    UPLOAD_FOLDER = 'website/static/'
     app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
     migrate = Migrate(app, db, render_as_batch=True)

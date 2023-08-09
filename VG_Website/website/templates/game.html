@@ -1,6 +1,9 @@
 {% extends "base.html" %}
 {% block title %}{{ game.title }}{% endblock %}
 {% block content %}
+{% if game.gameMusic %}
+    <audio id="gameMusic" src="../static/music/{{ game.gameMusic }}"></audio>
+{% endif %}
 <h1>{{ game.title }}</h1>
 <h5>Platforms: {{ game.platforms }}</h5>
 <h5>Release date: {{ game.releaseDate }}</h5>
@@ -12,7 +15,11 @@
     / {{ game.genre3.replace('_', ' ')  }}
     {% endif %}</h6>
 <div>
-    <img src="../static/images/{{ game.gameCover }}" class="dashboard">
+    {% if game.gameCover %}
+        <img src="../static/images/{{ game.gameCover }}" class="dashboard">
+    {% else %}
+        <img src="../static/images/placeholder.png" class="dashboard">
+    {% endif %}
 </div>
 <h5>Series: {{ game.series }}</h5>
 <h5>Franchise: {{ game.franchise }}</h5>
@@ -23,4 +30,13 @@
 <form method="POST">
     <button class="btn btn-primary">Update</button>
 </form>
+<script>
+    function sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+    window.onload = async function(){
+        await new Promise(r => setTimeout(r, 500));
+        document.getElementById("gameMusic").play();
+    }
+</script>
 {% endblock %}
