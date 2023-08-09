@@ -32,6 +32,26 @@
         <option value="All">All</option>
         <option value="Mega Man X">Mega Man X</option>
     </select>
+    <label for="Genre">Genre</label>
+    <select class="form-control" name="genre_select" id="genre_select">
+        <option value="All">All</option>
+        <option value="Action">Action</option>
+        <option value="Adventure">Adventure</option>
+        <option value="Fighting">Fighting</option>
+        <option value="Indie">Indie</option>
+        <option value="Metroidvania">Metroidvania</option>
+        <option value="Open_World">Open World</option>
+        <option value="2D_Platformer">2D Platformer</option>
+        <option value="3D_Platformer">3D Platformer</option>
+        <option value="Puzzle">Puzzle</option>
+        <option value="RPG">RPG</option>
+        <option value="JRPG">JRPG</option>
+        <option value="Sim">Simulation</option>
+        <option value="Shooter">Shooter</option>
+        <option value="Strategy">Strategy</option>
+        <option value="Turn-based">Turn-based</option>
+        <option value="Visual_Novel">Visual Novel</option>
+    </select>
     <br/>
 </form>
 <button class="btn btn-primary" id="reset">Reset</button>
@@ -72,12 +92,17 @@
         localStorage.setItem('selectedSeries', document.getElementById('series_select').value);
         document.getElementById("filters").submit();
     };
+    document.getElementById('genre_select').onchange = function() {
+        localStorage.setItem('selectedGenre', document.getElementById('genre_select').value);
+        document.getElementById("filters").submit();
+    };
     document.getElementById('reset').onclick = function() {
         localStorage.setItem('selectedSort', document.getElementById('sorter').value = "title");
         localStorage.setItem('selectedOrder', document.getElementById('order').value = "asc");
         localStorage.setItem('selectedPlatform', document.getElementById('platform_select').value = "All");
         localStorage.setItem('selectedFranchise', document.getElementById('franchise_select').value = "All");
         localStorage.setItem('selectedSeries', document.getElementById('series_select').value = "All");
+        localStorage.setItem('selectedGenre', document.getElementById('genre_select').value = "All");
         document.getElementById("filters").submit()
     };
 
@@ -89,6 +114,7 @@
             document.getElementById("platform_select").value = localStorage.getItem('selectedPlatform');
             document.getElementById("franchise_select").value = localStorage.getItem('selectedFranchise');
             document.getElementById("series_select").value = localStorage.getItem('selectedSeries');
+            document.getElementById("genre_select").value = localStorage.getItem('selectedGenre');
         }
         else {
             localStorage.setItem('selectedSort', document.getElementById('sorter').value = "title");
@@ -96,6 +122,7 @@
             localStorage.setItem('selectedPlatform', document.getElementById('platform_select').value = "All");
             localStorage.setItem('selectedFranchise', document.getElementById('franchise_select').value = "All");
             localStorage.setItem('selectedSeries', document.getElementById('series_select').value = "All");
+            localStorage.setItem('selectedGenre', document.getElementById('genre_select').value = "All");
         };
     };
 

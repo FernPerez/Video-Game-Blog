@@ -117,6 +117,7 @@ def games():
         system = request.form.get("platform_select")
         franchise = request.form.get("franchise_select")
         series = request.form.get("series_select")
+        genre = request.form.get("genre_select")
 
         listLength = len(filteredList)
         i = 0
@@ -132,7 +133,10 @@ def games():
                 listLength -= 1
             elif series != 'All' and series != filteredList[i].series:
                 del filteredList[i]
-                listLength -= 1            
+                listLength -= 1  
+            elif genre != 'All' and genre != filteredList[i].genre1 and genre != filteredList[i].genre2 and genre != filteredList[i].genre3:   
+                del filteredList[i]
+                listLength -= 1 
             else:
                 i += 1
 
