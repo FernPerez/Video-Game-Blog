@@ -74,7 +74,7 @@
     <button class="btn btn-primary" id="reset">Reset</button>
 </div>
 <div class="subContainerDiv">
-    <ul class="list-group list-group-flush" id="games">
+    <!-- <ul class="list-group list-group-flush" id="games">
         {% if sort_by == "default" and order == "default" %}
             {% for game in games | sort(attribute='title', reverse=False) %}
                 <li><a class="nav-item nav-link" href="/games/{{ game.title }}">{{ game.title }}</a></li>
@@ -88,9 +88,40 @@
                 <li><a class="nav-item nav-link" href="/games/{{ game.title }}">{{ game.title }}</a></li>
             {% endfor %}  
         {% endif %}
-    </ul>
+    </ul> -->
+    <div class="gameGridContainer">
+        {% if sort_by == "default" and order == "default" %}
+            {% for game in games | sort(attribute='title', reverse=False) %}
+                <div class="gameGridItem" onclick="window.location='/games/{{ game.title }}'">
+                    <img class = "gameGridImage" src="../static/images/{{ game.gameCover }}">
+                    <div class="gameGridTitle">
+                        <h5>{{ game.title }}</h5>
+                    </div>
+                </div>
+            {% endfor %} 
+        {% elif order == "asc" %}
+            {% for game in games | sort(attribute=sort_by, reverse=False) %}
+                <div class="gameGridItem" onclick="window.location='/games/{{ game.title }}'">
+                    <img class = "gameGridImage" src="../static/images/{{ game.gameCover }}">
+                    <div class="gameGridTitle">
+                        <h5>{{ game.title }}</h5>
+                    </div>
+                </div>
+            {% endfor %} 
+        {% else %}
+            {% for game in games | sort(attribute=sort_by, reverse=True) %}
+                <div class="gameGridItem" onclick="window.location='/games/{{ game.title }}'">
+                    <img class = "gameGridImage" src="../static/images/{{ game.gameCover }}">
+                    <div class="gameGridTitle">
+                        <h5>{{ game.title }}</h5>
+                    </div>
+                </div>
+            {% endfor %} 
+        {% endif %}    
+    </div>
 </div>
 <script>
+
     function search(ele) {
         if(event.key == 'Enter'){
             localStorage.setItem('searchParam', document.getElementById('searchbar').value);
