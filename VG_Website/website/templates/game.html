@@ -4,6 +4,7 @@
 {% if game.gameMusic %}
     <audio id="gameMusic" src="../static/music/{{ game.gameMusic }}"></audio>
 {% endif %}
+<div class="subContainerDiv">
 <h1>{{ game.title }}</h1>
 <h5>Platforms: {{ game.platforms }}</h5>
 <h5>Release date: {{ game.releaseDate }}</h5>
@@ -39,4 +40,5 @@
         document.getElementById("gameMusic").play();
     }
 </script>
+</div>
 {% endblock %}

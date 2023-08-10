@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% block title %}Add Game{% endblock %}
 {% block content %}
+<div class="subContainerDiv">
 <h1>Add a Game</h1>
 <form method="POST" enctype="multipart/form-data">
     <h3 allign="center">Enter game information:</h3>
@@ -138,7 +139,7 @@
             name="score"
             min="0"
             max="10"
-            step="0.1" 
+            step="0.01" 
             placeholder="0"
             value="0"
         />
@@ -151,9 +152,18 @@
             name="gameCover" 
         />
         <br/>
+        <label for="gameMusic">Game Music</label>
+        <input 
+            type="file" 
+            class="form-control" 
+            id="gameMusic" 
+            name="gameMusic" 
+        />
+        <br/>
     </div>
     <button type="submit" class="btn btn-primary">Submit</button>
     <br/><br/>
 </form>
+</div>
 {% endblock %}
 

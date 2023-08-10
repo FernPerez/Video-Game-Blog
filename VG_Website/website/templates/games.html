@@ -1,87 +1,95 @@
 {% extends "base.html" %}
 {% block title %}My Games{% endblock %}
 {% block content %}
-<h1>My Games</h1>
-<form method="POST" id="filters">
-    <label for="Search">Search:</label>
-    <input 
-    type="text" 
-    class="form-control" 
-    id="searchbar" 
-    name="searchbar" 
-    placeholder="Search"
-    onkeydown="search(this)"
-    autocomplete="off"
-    />
-    <label for="Sort">Sort by:</label>
-    <select class="form-control" name="sorter" id="sorter">
-            <option value="title">Title</option>
-            <option value="releaseDate">Release Date</option>
-            <option value="score">Score</option>
-            <option value="dateStarted">Date Started</option>
-    </select>
-    <label for="Order">Order: </label>
-    <select class="form-control" name="order" id="order">
-        <option value="desc">Descending</option>
-        <option value="asc">Ascending</option>
-    </select>
-    <label for="Platform">Platform</label>
-    <select class="form-control" name="platform_select" id="platform_select">
-        <option value="All">All</option>
-        <option value="NES">NES</option>
-        <option value="SNES">SNES</option>
-        <option value="PS1">PS1</option>
-    </select>
-    <label for="Franchise">Franchise</label>
-    <select class="form-control" name="franchise_select" id="franchise_select">
-        <option value="All">All</option>
-        <option value="Mega Man">Mega Man</option>
-    </select>
-    <label for="Series">Series</label>
-    <select class="form-control" name="series_select" id="series_select">
-        <option value="All">All</option>
-        <option value="Mega Man X">Mega Man X</option>
-    </select>
-    <label for="Genre">Genre</label>
-    <select class="form-control" name="genre_select" id="genre_select">
-        <option value="All">All</option>
-        <option value="Action">Action</option>
-        <option value="Adventure">Adventure</option>
-        <option value="Fighting">Fighting</option>
-        <option value="Indie">Indie</option>
-        <option value="Metroidvania">Metroidvania</option>
-        <option value="Open_World">Open World</option>
-        <option value="2D_Platformer">2D Platformer</option>
-        <option value="3D_Platformer">3D Platformer</option>
-        <option value="Puzzle">Puzzle</option>
-        <option value="RPG">RPG</option>
-        <option value="JRPG">JRPG</option>
-        <option value="Sim">Simulation</option>
-        <option value="Shooter">Shooter</option>
-        <option value="Strategy">Strategy</option>
-        <option value="Turn-based">Turn-based</option>
-        <option value="Visual_Novel">Visual Novel</option>
-    </select>
-    <br/>
-</form>
-<button class="btn btn-primary" id="reset">Reset</button>
-<br/><br/>
-<ul class="list-group list-group-flush" id="games">
-    {% if sort_by == "default" and order == "default" %}
-        {% for game in games | sort(attribute='title', reverse=False) %}
-            <li><a class="nav-item nav-link" href="/games/{{ game.title }}">{{ game.title }}</a></li>
-        {% endfor %}
-    {% elif order == "asc" %}
-        {% for game in games | sort(attribute=sort_by, reverse=False) %}
-            <li><a class="nav-item nav-link" href="/games/{{ game.title }}">{{ game.title }}</a></li>
-        {% endfor %}
-    {% else %}      
-        {% for game in games | sort(attribute=sort_by, reverse=True) %}
-            <li><a class="nav-item nav-link" href="/games/{{ game.title }}">{{ game.title }}</a></li>
-        {% endfor %}  
-    {% endif %}
-</ul>
-<br /><br />
+<div class="subContainerDiv">
+    <h1>My Games</h1>
+    <form method="POST" id="filters">
+        <label for="Search">Search:</label>
+        <input 
+        type="text" 
+        class="form-control" 
+        id="searchbar" 
+        name="searchbar" 
+        placeholder="Search"
+        onkeydown="search(this)"
+        autocomplete="off"
+        />
+        <div class="float-container">
+            <div class="float-child">
+                <label for="Sort">Sort by:</label>
+                <select class="form-control gamesSelectors" name="sorter" id="sorter">
+                        <option value="title">Title</option>
+                        <option value="releaseDate">Release Date</option>
+                        <option value="score">Score</option>
+                        <option value="dateStarted">Date Started</option>
+                </select>
+                <label for="Platform">Platform</label>
+                <select class="form-control gamesSelectors" name="platform_select" id="platform_select">
+                    <option value="All">All</option>
+                    <option value="NES">NES</option>
+                    <option value="SNES">SNES</option>
+                    <option value="PS1">PS1</option>
+                </select>
+                <label for="Series">Series</label>
+                <select class="form-control gamesSelectors" name="series_select" id="series_select">
+                    <option value="All">All</option>
+                    <option value="Mega Man X">Mega Man X</option>
+                </select>
+            </div>
+            <div class="float-child">
+                <label for="Order">Order: </label>
+                <select class="form-control gamesSelectors" name="order" id="order">
+                    <option value="desc">Descending</option>
+                    <option value="asc">Ascending</option>
+                </select>
+                
+                <label for="Franchise">Franchise</label>
+                <select class="form-control gamesSelectors" name="franchise_select" id="franchise_select">
+                    <option value="All">All</option>
+                    <option value="Mega Man">Mega Man</option>
+                </select>
+                <label for="Genre">Genre</label>
+                <select class="form-control gamesSelectors" name="genre_select" id="genre_select">
+                    <option value="All">All</option>
+                    <option value="Action">Action</option>
+                    <option value="Adventure">Adventure</option>
+                    <option value="Fighting">Fighting</option>
+                    <option value="Indie">Indie</option>
+                    <option value="Metroidvania">Metroidvania</option>
+                    <option value="Open_World">Open World</option>
+                    <option value="2D_Platformer">2D Platformer</option>
+                    <option value="3D_Platformer">3D Platformer</option>
+                    <option value="Puzzle">Puzzle</option>
+                    <option value="RPG">RPG</option>
+                    <option value="JRPG">JRPG</option>
+                    <option value="Sim">Simulation</option>
+                    <option value="Shooter">Shooter</option>
+                    <option value="Strategy">Strategy</option>
+                    <option value="Turn-based">Turn-based</option>
+                    <option value="Visual_Novel">Visual Novel</option>
+                </select>
+            </div>
+        </div>
+    </form>
+    <button class="btn btn-primary" id="reset">Reset</button>
+</div>
+<div class="subContainerDiv">
+    <ul class="list-group list-group-flush" id="games">
+        {% if sort_by == "default" and order == "default" %}
+            {% for game in games | sort(attribute='title', reverse=False) %}
+                <li><a class="nav-item nav-link" href="/games/{{ game.title }}">{{ game.title }}</a></li>
+            {% endfor %}
+        {% elif order == "asc" %}
+            {% for game in games | sort(attribute=sort_by, reverse=False) %}
+                <li><a class="nav-item nav-link" href="/games/{{ game.title }}">{{ game.title }}</a></li>
+            {% endfor %}
+        {% else %}      
+            {% for game in games | sort(attribute=sort_by, reverse=True) %}
+                <li><a class="nav-item nav-link" href="/games/{{ game.title }}">{{ game.title }}</a></li>
+            {% endfor %}  
+        {% endif %}
+    </ul>
+</div>
 <script>
     function search(ele) {
         if(event.key == 'Enter'){

@@ -34,6 +34,7 @@ def addGame():
         description = request.form.get('description')
         score = request.form.get('score')
         gameCover = request.files.get('gameCover')
+        gameMusic = request.files.get('gameMusic')
 
         # Check validity of inputs and flash messages
         if len(title) < 1:
@@ -76,6 +77,13 @@ def addGame():
                 gameCoverName = secure_filename(gameCover.filename)
                 gameCoverName = str(uuid.uuid1()) + "_" + gameCoverName
 
+            if gameMusic.filename == '':
+                gameMusic = None
+                gameMusicName = None
+            else:
+                gameMusicName = secure_filename(gameMusic.filename)
+                gameMusicName = str(uuid.uuid1()) + "_" + gameMusicName
+
             #add game to db
             new_game = Game(
                 title = title,
@@ -90,13 +98,19 @@ def addGame():
                 dateFinished = dateFinished,
                 description = description,
                 score = score,
-                gameCover = gameCoverName
+                gameCover = gameCoverName,
+                gameMusic = gameMusicName
             )
             if gameCover != None:
-                gameCover.save(os.path.join(current_app.config["UPLOAD_FOLDER"], gameCoverName))
-            db.session.add(new_game)
-            db.session.commit()
-            flash('Game added!', category='success')
+                gameCover.save(os.path.join(current_app.config["UPLOAD_FOLDER"], f'images/{gameCoverName}'))
+            if gameMusic != None:
+                gameMusic.save(os.path.join(current_app.config["UPLOAD_FOLDER"], f'music/{gameMusicName}'))
+            try:
+                db.session.add(new_game)
+                db.session.commit()
+                flash('Game added!', category='success')
+            except:
+                flash("Something went wrong...", category="error")
 
 
 

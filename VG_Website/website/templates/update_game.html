@@ -1,11 +1,13 @@
 {% extends "base.html" %}
 {% block title %}Update Game{% endblock %}
 {% block content %}
+
 <style>
     body.background {
-        background-image: url(../../static/images/Main_Background2.jpg);  
+        background-image: url(../../static/images/Main_Background.gif);  
     }
 </style>
+<div class="subContainerDiv">
 <h1>Update {{ game.title }}</h1>
 <form method="POST" enctype="multipart/form-data">
     <div class="form-group">
@@ -172,6 +174,7 @@
     <br/><br/>
     </div>
 </form>
+</div>
 
 <script type="text/javascript">
     window.onload = function() {
