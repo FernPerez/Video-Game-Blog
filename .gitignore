@@ -6,3 +6,9 @@
 
 # jpg files
 *.jpg
+
+# gif files
+*.gif
+
+# flaskenv
+.flaskenv
