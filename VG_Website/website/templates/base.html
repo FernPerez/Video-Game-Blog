@@ -16,6 +16,19 @@
         />
         <title>{% block title %}Base{% endblock %}</title>
         <style>
+            @keyframes zoom {
+                0% {transform: scale(1);}
+                100% {transform: scale(1.015);}
+            }
+
+            @keyframes slideFadeUp {
+                0% {transform: translateY(100%);}
+                100% {transform: translateY(0%);}
+            }
+
+            .gamesSlideAnim {
+                animation: .3s ease-out 0s slideFadeUp forwards;
+            }
             img.dashboard {
                 min-width: 400px;
                 min-height: 500px;
@@ -74,7 +87,7 @@
                 background-color: rgb(202, 61, 5);
                 gap: 10px;
                 padding: 10px;
-                border-radius: 25px;
+                border-radius: 10px;
             }
             .gameGridItem {
                 padding: 5px;
@@ -83,13 +96,25 @@
                 height: 300px;
                 box-shadow: 2px 2px 2px 2px black;
                 cursor: pointer;
+                border-radius: 10px;
+            }
+
+            zoomAnim {
+                width: 1000px;
+                padding: 5px;
+            }
+
+            .gameGridItem:hover {
+                animation: .2s ease-out 0s zoom forwards;
             }
             .gameGridImage {
                 min-width: 100%;
-                min-height: 250px;
+                min-height: 85%;
                 max-width: 100%;
-                max-height: 250px;
+                max-height: 85%;
                 padding: 0px;
+                border-top-left-radius: 10px;
+                border-top-right-radius: 10px;
             }
             .gameGridTitle {
                 margin: 0px;
@@ -100,6 +125,7 @@
                 background-color: black;
                 color: white;
                 text-align: center;
+                overflow: hidden; 
             }
             .resetDiv {
                 display: inline-block;
@@ -125,7 +151,7 @@
         </style>
     </header>
     <body class="background">
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark"> 
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top"> 
             <button 
                 class="navbar-toggler" 
                 type="button" 
@@ -143,7 +169,7 @@
                 </div>
             </div>
         </nav>
-
+        <br /><br /><br/>
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
                 {% for category, message in messages %}
@@ -165,7 +191,6 @@
                 {% endfor %}
             {% endif %}
         {% endwith %}
-
         <div class="container containerDiv">
             {% block content%}
             {% endblock %}

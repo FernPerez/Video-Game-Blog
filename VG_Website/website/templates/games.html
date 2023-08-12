@@ -28,12 +28,25 @@
                     <option value="All">All</option>
                     <option value="NES">NES</option>
                     <option value="SNES">SNES</option>
+                    <option value="PC">PC</option>
                     <option value="PS1">PS1</option>
+                    <option value="Gamecube">Gamecube</option>
+                    <option value="PS2">PS2</option>
+                    <option value="Wii">Wii</option>
+                    <option value="Mobile">Mobile</option>
+                    <option value="3DS">3DS</option>
+                    <option value="Wii U">Wii U</option>
+                    <option value="Switch">Switch</option>
+                    <option value="PS5">PS5</option>
                 </select>
                 <label for="Series">Series</label>
                 <select class="form-control gamesSelectors" name="series_select" id="series_select">
                     <option value="All">All</option>
+                    <option value="3D Zelda">3D Zelda</option>
+                    <option value="Mega Man (Classic)">Mega Man (Classic)</option>
                     <option value="Mega Man X">Mega Man X</option>
+                    <option value="Persona">Persona</option>
+                    <option value="Xenoblade Chronicles">Xenoblade Chronicles</option>
                 </select>
             </div>
             <div class="float-child">
@@ -46,7 +59,11 @@
                 <label for="Franchise">Franchise</label>
                 <select class="form-control gamesSelectors" name="franchise_select" id="franchise_select">
                     <option value="All">All</option>
+                    <option value="The Legend of Zelda">The Legend of Zelda</option>
                     <option value="Mega Man">Mega Man</option>
+                    <option value="Megami Tensei">Megami Tensei</option>
+                    <option value="Xeno">Xeno</option>
+                    <option value="Honkai">Honkai</option>
                 </select>
                 <label for="Genre">Genre</label>
                 <select class="form-control gamesSelectors" name="genre_select" id="genre_select">
@@ -74,21 +91,6 @@
     <button class="btn btn-primary" id="reset">Reset</button>
 </div>
 <div class="subContainerDiv">
-    <!-- <ul class="list-group list-group-flush" id="games">
-        {% if sort_by == "default" and order == "default" %}
-            {% for game in games | sort(attribute='title', reverse=False) %}
-                <li><a class="nav-item nav-link" href="/games/{{ game.title }}">{{ game.title }}</a></li>
-            {% endfor %}
-        {% elif order == "asc" %}
-            {% for game in games | sort(attribute=sort_by, reverse=False) %}
-                <li><a class="nav-item nav-link" href="/games/{{ game.title }}">{{ game.title }}</a></li>
-            {% endfor %}
-        {% else %}      
-            {% for game in games | sort(attribute=sort_by, reverse=True) %}
-                <li><a class="nav-item nav-link" href="/games/{{ game.title }}">{{ game.title }}</a></li>
-            {% endfor %}  
-        {% endif %}
-    </ul> -->
     <div class="gameGridContainer">
         {% if sort_by == "default" and order == "default" %}
             {% for game in games | sort(attribute='title', reverse=False) %}
@@ -121,7 +123,6 @@
     </div>
 </div>
 <script>
-
     function search(ele) {
         if(event.key == 'Enter'){
             localStorage.setItem('searchParam', document.getElementById('searchbar').value);
@@ -165,6 +166,14 @@
     };
 
     window.onload = function() {
+        const items = document.querySelectorAll('.gameGridItem');
+        var i = 0.3;
+        items.forEach(item => {          
+            item.style.animation = "slideFadeUp " + i + "s";
+            i += 0.075;
+        })
+
+
         if('{{ sort_by }}' != "default"){
             document.getElementById("searchbar").value = localStorage.getItem('searchParam');
             document.getElementById("order").value = localStorage.getItem('selectedOrder');
@@ -184,6 +193,19 @@
             localStorage.setItem('selectedGenre', document.getElementById('genre_select').value = "All");
         };
     };
+    setTimeout(function removeAnimations() {
+        const items = document.querySelectorAll(".gameGridItem")
+
+        items.forEach(item => {
+            item.style.animation = "";
+            console.log(item.style.animation)
+            
+        });
+    }, 1000);
+
+    if ( window.history.replaceState ) {
+        window.history.replaceState( null, null, window.location.href );
+      }
 
 </script>
 {% endblock %}
