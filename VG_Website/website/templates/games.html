@@ -29,23 +29,38 @@
                     <option value="NES">NES</option>
                     <option value="SNES">SNES</option>
                     <option value="PC">PC</option>
+                    <option value="N64">N64</option>
                     <option value="PS1">PS1</option>
+                    <option value="GBA">GBA</option>
                     <option value="Gamecube">Gamecube</option>
                     <option value="PS2">PS2</option>
                     <option value="Wii">Wii</option>
+                    <option value="PS3">PS3</option>
                     <option value="Mobile">Mobile</option>
+                    <option value="DS">DS</option>
                     <option value="3DS">3DS</option>
                     <option value="Wii U">Wii U</option>
+                    <option value="PS4">PS4</option>
                     <option value="Switch">Switch</option>
                     <option value="PS5">PS5</option>
                 </select>
                 <label for="Series">Series</label>
                 <select class="form-control gamesSelectors" name="series_select" id="series_select">
                     <option value="All">All</option>
+                    <option value="3D Mario">3D Mario</option>
+                    <option value="2D Zelda">2D Zelda</option>
                     <option value="3D Zelda">3D Zelda</option>
                     <option value="Mega Man (Classic)">Mega Man (Classic)</option>
                     <option value="Mega Man X">Mega Man X</option>
+                    <option value="Mega Man Zero">Mega Man Zero</option>
+                    <option value="Metroid">Metroid</option>
+                    <option value="Fire Emblem">Fire Emblem</option>
+                    <option value="2D Sonic">2D Sonic</option>
+                    <option value="3D Sonic">3D Sonic</option>
                     <option value="Persona">Persona</option>
+                    <option value="Valkyria Chronicles">Valkyria Chronicles</option>
+                    <option value="NieR">NieR</option>
+                    <option value="Portal">Portal</option>
                     <option value="Xenoblade Chronicles">Xenoblade Chronicles</option>
                 </select>
             </div>
@@ -59,9 +74,16 @@
                 <label for="Franchise">Franchise</label>
                 <select class="form-control gamesSelectors" name="franchise_select" id="franchise_select">
                     <option value="All">All</option>
+                    <option value="Super Mario">Super Mario</option>
                     <option value="The Legend of Zelda">The Legend of Zelda</option>
                     <option value="Mega Man">Mega Man</option>
+                    <option value="Metroid">Metroid</option>
                     <option value="Megami Tensei">Megami Tensei</option>
+                    <option value="Fire Emblem">Fire Emblem</option>
+                    <option value="Sonic the Hedgehog">Sonic the Hedgehog</option>
+                    <option value="Valkyria Chronicles">Valkyria Chronicles</option>
+                    <option value="NieR">NieR</option>
+                    <option value="Portal">Portal</option>
                     <option value="Xeno">Xeno</option>
                     <option value="Honkai">Honkai</option>
                 </select>
@@ -70,6 +92,7 @@
                     <option value="All">All</option>
                     <option value="Action">Action</option>
                     <option value="Adventure">Adventure</option>
+                    <option value="Collectathon">Collectathon</option>
                     <option value="Fighting">Fighting</option>
                     <option value="Indie">Indie</option>
                     <option value="Metroidvania">Metroidvania</option>
@@ -82,6 +105,7 @@
                     <option value="Sim">Simulation</option>
                     <option value="Shooter">Shooter</option>
                     <option value="Strategy">Strategy</option>
+                    <option value="Tower_Defense">Tower Defense</option>
                     <option value="Turn-based">Turn-based</option>
                     <option value="Visual_Novel">Visual Novel</option>
                 </select>
@@ -170,7 +194,9 @@
         var i = 0.3;
         items.forEach(item => {          
             item.style.animation = "slideFadeUp " + i + "s";
-            i += 0.075;
+            if(i <= 1){
+                i += 0.075;
+            };
         })
 
 
@@ -198,14 +224,10 @@
 
         items.forEach(item => {
             item.style.animation = "";
-            console.log(item.style.animation)
             
         });
     }, 1000);
 
-    if ( window.history.replaceState ) {
-        window.history.replaceState( null, null, window.location.href );
-      }
 
 </script>
 {% endblock %}
