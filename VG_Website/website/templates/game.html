@@ -4,41 +4,103 @@
 {% if game.gameMusic %}
     <audio id="gameMusic" src="../static/music/{{ game.gameMusic }}"></audio>
 {% endif %}
-<div class="subContainerDiv">
-<h1>{{ game.title }}</h1>
-<h5>Platforms: {{ game.platforms }}</h5>
-<h5>Release date: {{ game.releaseDate }}</h5>
-<h6>Genre(s): {{ game.genre1.replace('_', ' ') }}
-    {% if game.genre2 != "" %}
-    / {{ game.genre2.replace('_', ' ')  }}
-    {% endif %}
-    {% if game.genre3 != ""%}
-    / {{ game.genre3.replace('_', ' ')  }}
-    {% endif %}</h6>
-<div>
-    {% if game.gameCover %}
-        <img src="../static/images/{{ game.gameCover }}" class="dashboard">
-    {% else %}
-        <img src="../static/images/placeholder.png" class="dashboard">
-    {% endif %}
+<div class="mainGameContainer gameShrinkAnim">
+    <div class="mainGameDetails">
+        <div class="TitleDiv titleSlideAnim">
+            <h1>{{ game.title }}</h1>
+            <h5>Platforms: {{ game.platforms }}</h5>
+            <h5 id="release">Release date: {{ game.releaseDate }}</h5>
+            <h6>Genre(s): {{ game.genre1.replace('_', ' ') }}
+            {% if game.genre2 != "" %}
+            / {{ game.genre2.replace('_', ' ')  }}
+            {% endif %}
+            {% if game.genre3 != ""%}
+            / {{ game.genre3.replace('_', ' ')  }}
+            {% endif %}</h6>
+        </div>
+        <div class="scoreDiv scoreSlideAnim">
+            <br/><br/><br/><br/>
+            <h1>Score: {{ game.score }}</h1>
+        </div>
+    </div>
+    <div class="divLine"></div>
+    <div class="gameContainer">
+        <div class="gameInfoContainer gameCoverAnim">
+            <div class="gameHeader">
+                <h4>{{ game.title }}</h4>
+            </div>
+            <div class="gameCoverContainer">
+                {% if game.gameCover %}
+                    <img src="../static/images/{{ game.gameCover }}" class="dashboard">
+                {% else %}
+                    <img src="../static/images/placeholder.png" class="dashboard">
+                {% endif %}
+            </div>
+            <div class="detailDiv">
+                <h5>Details</h5>
+            </div>
+            <div class="detailSubDiv">
+                <h6 class="detailKey">Series:</h6>
+                <h6 class="detailValue">{{ game.series }}</h6>
+            </div>
+            <div class="detailSubDiv">
+                <h6 class="detailKey">Franchise:</h6>
+                <h6 class="detailValue">{{ game.franchise }}</h6>
+            </div>
+            <div class="detailSubDiv">
+                <h6 class="detailKey">Date Started:</h6>
+                <h6 class="detailValue">{{ game.dateStarted }}</h6>
+            </div>
+            <div class="detailSubDiv">
+                <h6 class="detailKey">Date Finished:</h6>
+                <h6 class="detailValue">{{ game.dateFinished }}</h6>
+            </div>
+        </div>
+        <div class="gameDescContainer">
+            <h4 class="titleSlideAnim">Description:</h4>
+            <p class="descAnim">{{ game.description }}</p>
+        </div>
+    </div>
+    <form method="POST">
+        <button class="btn btn-primary updateBtn">Update</button>
+    </form>
 </div>
-<h5>Series: {{ game.series }}</h5>
-<h5>Franchise: {{ game.franchise }}</h5>
-<h5>Date Started: {{ game.dateStarted }}</h5>
-<h5>Date Finished: {{ game.dateFinished }}</h5>
-<h4>Score: {{ game.score }}</h4>
-<h6>Description: {{ game.description }}</h6>
-<form method="POST">
-    <button class="btn btn-primary">Update</button>
-</form>
+
 <script>
     function sleep(ms) {
         return new Promise(resolve => setTimeout(resolve, ms));
     }
     window.onload = async function(){
+        convertDates();
         await new Promise(r => setTimeout(r, 500));
         document.getElementById("gameMusic").play();
     }
+    function convertDates() {
+        const months = ["January",
+                        "February", 
+                        "March", 
+                        "April",
+                        "May",
+                        "June",
+                        "July",
+                        "August",
+                        "September",
+                        "October",
+                        "November",
+                        "December"
+                    ];
+        var releaseDate = '{{ game.releaseDate }}';
+        var releaseMonth = parseInt(releaseDate.substring(5, 7));
+        releaseMonth = months[releaseMonth - 1];
+        var releaseDay = releaseDate.substring(8, 10);
+        if(releaseDay[0] == "0"){
+            releaseDay = releaseDay.replace("0", "");
+        }
+        releaseYear = releaseDate.substring(0, 4)
+        console.log(releaseMonth + " " + releaseDay + ", " + releaseYear);
+
+        document.getElementById("release").innerText = ("Release Date: " + releaseMonth + " " + releaseDay + ", " + releaseYear);
+    };
 </script>
 </div>
 {% endblock %}

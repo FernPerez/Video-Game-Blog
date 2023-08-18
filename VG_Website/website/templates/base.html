@@ -25,16 +25,47 @@
                 0% {transform: translateY(100%);}
                 100% {transform: translateY(0%);}
             }
+            @keyframes descSlide {
+                0% {transform: translateY(100vh);}
+                100% {transform: translateY(0%);}
+            }
+            @keyframes shrink {
+                0% {transform: scale(120%);}
+                100% {transform: scale(100%);}
+            }
+            @keyframes slideFadeRight {
+                0% {transform: translateX(-100%);}
+                100% {transform: translateX(0%);}
+            }
+            @keyframes slideFadeLeft {
+                0% {transform: translateX(100%);}
+                100% {transform: translateX(0%);}
+            }
 
             .gamesSlideAnim {
                 animation: .3s ease-out 0s slideFadeUp forwards;
+            }
+            .gameShrinkAnim {
+                animation: 0.4s ease-out 0s shrink;
+            }
+            .titleSlideAnim {
+                animation: .5s ease-out 0s slideFadeRight forwards;
+            }
+            .scoreSlideAnim {
+                animation: .55s ease-out 0s slideFadeLeft backwards;
+            }
+            .gameCoverAnim {
+                animation: .5s ease-out 0s slideFadeLeft backwards;
+            }
+            .descAnim {
+                animation: .7s ease-out 0s descSlide forwards;
             }
             img.dashboard {
                 min-width: 400px;
                 min-height: 500px;
                 max-width: 400px;
-                max-height: 500px; 
-                box-shadow: 10px 10px black;               
+                max-height: 500px;     
+                margin-top: 0px;           
             }
             body.background {
                 background-color: black;
@@ -57,8 +88,8 @@
                 color: white;
             }
             .gamesSelectors {
-                background-color: rgb(248, 52, 94);
-                color: black;
+                background-color: #942842;
+                color: white;
                 width: 110px;
                 height: 33px;
                 font-size: small;
@@ -67,6 +98,8 @@
             option {
                 color: black;
                 background-color: rgb(255, 118, 125);
+                background-color: #b33b57;
+                color: white;
             }
             .float-container {
                 padding: 20px;
@@ -85,6 +118,7 @@
                 display: grid;
                 grid-template-columns: auto auto auto auto auto auto;
                 background-color: rgb(202, 61, 5);
+                background-color: #942842;
                 gap: 10px;
                 padding: 10px;
                 border-radius: 10px;
@@ -145,8 +179,101 @@
             }
             #reset {
                 margin-left: 50px;
-                background-color: rgb(248, 52, 94);
-                color: black;
+                background-color: #942842;
+                color: white;
+                border-color: #942842;
+            }
+            .divLine {
+                width: 90%;
+                height: 1px;
+                background-color: #942842;
+                margin-top: 10px;
+                margin-bottom: 15px;
+                margin-left: 0px;
+            }
+            .mainGameContainer {
+                background-color: rgb(29, 27, 27);
+                border-radius: 25px;
+                opacity: 0.95;
+                max-width: 80%;
+                height: fit-content;
+                padding: 30px;
+                margin: auto;
+                margin-bottom: 40px;
+                color: white;
+                border-radius: 25px;
+                box-shadow: 5px 5px 5px 5px black;
+            }
+            .mainGameDetails {
+                width: 100%;
+                overflow: hidden;
+            }
+            .TitleDiv {
+                width: 50%;
+                float: left;
+            }
+            .scoreDiv {
+                width: 50%;
+                float: right;
+                padding-left: 15%;
+            }
+            .gameContainer {
+                width: 100%;
+                overflow: hidden;
+            }
+            .gameInfoContainer {
+                width: 50%;
+                float: right;
+                display: flex;
+                flex-direction: column;
+                padding-left: 7%;
+                box-shadow: 10px 10px black;
+            }
+            .gameDescContainer {
+                width: 50%;
+                float: left;
+                padding-left: 0%;
+            }
+            .gameHeader {
+                width: 400px;
+                background-color: #942842;
+                color: white;
+                text-align: center;
+                border-top-left-radius: 10px;
+                border-top-right-radius: 10px;
+                padding: 2%;
+            }
+            .gameCoverContainer {
+                width: 400px;
+            }
+            .detailDiv {
+                width: 400px;
+                background-color: #b33b57;
+                color: white;
+                padding: 1%;
+                text-align: center;
+            }
+            .detailSubDiv {
+                width: 400px;
+                color: white;
+                padding: 1%;
+                border-style: solid;
+                border-color: #942842;
+                border-width: 1px;
+            }
+            .detailKey {
+                float: left;
+                width: 25%;
+                padding-left: 3%;
+            }
+            .detailValue {
+                float: left;
+                width: 75%;
+                padding-left: 20%;
+            }
+            .updateBtn {
+                background-color: #942842;
+                border-color: #942842;
             }
         </style>
     </header>
