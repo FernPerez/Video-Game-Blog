@@ -1,7 +1,54 @@
 {% extends "base.html" %}
 {% block title %}Home{% endblock %}
 {% block content %}
-<div class="subContainerDiv">
-<h1>Hello! Wecome to my website!</h1>
+<div class="homeContainerDiv homeSlide">
+    <h1 class="centralized">Hello!</h1>
+    <h2 class="centralized">Wecome to my Videogame Blog!</h2>
+    <h3 class="centralized">by Fernando Perez</h3>
+    <div class="homeInnerContent">
+        <p>My name is Fernando Perez. This is a personal website I created using Python and Flask not only
+            as a means to refresh and improve my web development skills, but also as a tool that I could
+            personally use for my hobbies. I am a massive fan of video games, and I also love taking note of
+            my "journey" playing games over the years. While I used to use <i>tier list maker</i> websites
+            to rank my played games, this became kind of repetitive to do and didn't let me fully express
+            my thoughts on a game or rank them in as much detail. So I thought, "Wait a minute. I'm a programmer.
+            I went to school for doing things like this." So I decided to create this site as a sort of passion
+            project and a way to test my skills. So far, I am quite satisfied with the way it has come out.
+        </p>
+        <p>
+            Note that the ability to upload images and music is only available in the private unhosted version of the
+            site. Due to most of the images and music being potentially copyrighted, I do not want to allow users
+            to upload and risk a DMCA takedown. Instead, users can select one of multiple stock images and royalty-free
+            music.
+        </p>
+        <h3>Features</h3>
+        <h4>Games Page</h4>
+        <div class="homeLeftFloat">
+            <p>This is what I consider the main page of the site. It contains a grid of all the games I have
+                played with their own individual thumbnails. The page also lets you use multiple different
+                sorting options such as title, score, and release date. You can also filter by franchise,
+                series, genre, and platforms. You can also search manually using the searchbar. The thumbnails
+                load in with an animation, and also expand when hovered over. The images on these thumbnails are
+                dynamically taken from each game's own record in the database. 
+            </p>
+        </div>
+        <div class="homeLeftFloat">
+            <img class="homeImg" src="../static/images/HomePage/Screenshot 2023-08-30 161326.png">
+        </div>
+        <h4>Game Info</h4>
+        <div class="homeLeftFloat">
+            <img class="homeImg" src="../static/images/HomePage/Screenshot 2023-08-30 164304.png">
+        </div>
+        <div class="homeLeftFloat">
+            <p>
+                When a game in the grid is clicked, the user is brought to a page that contains details about the respective
+                game. These details include the game's title, series, franchise, release date, systems, and genres. The page
+                also contains the user's own personal feelings on the game in the form of a description and score. Also worth noting 
+                is the "Date Started" and "Date Finished" parameters, which are useful to keep track of when the user played
+                these games. Sliding animations are given to the elements of the page. Finally, there is the update button 
+                which lets users change any information in the page.   
+            </p>
+        </div>
+    </div>
 </div>
 {% endblock %}
