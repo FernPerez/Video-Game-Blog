@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% block title %}Home{% endblock %}
 {% block content %}
+<img class="homePic homePicSlide" src="../static/images/HomePage/Me_cropped.jpg">
 <div class="homeContainerDiv homeSlide">
     <h1 class="centralized">Hello!</h1>
     <h2 class="centralized">Wecome to my Videogame Blog!</h2>
@@ -48,6 +49,22 @@
                 these games. Sliding animations are given to the elements of the page. Finally, there is the update button 
                 which lets users change any information in the page.   
             </p>
+        </div>
+        <h4>Adding and Updating Game Info</h4>
+        <div class="homeLeftFloat">
+            
+            <p>
+                When the user wants to add a game to their list, they need to go to the <i>Add Game</i> page to insert the
+                necessary information. This page lets them input all the details as well as uploading images and music (only
+                in the private version currently). When the user wants to update a game's info, they can find the game and then
+                select the <i>Update</i> button. The update page is very similar to the add page, but it will have the
+                game's previous info already in the fields. The img and music selection will be blank, but the app will not
+                update them if the user leaves them blank, so they don't need to upload the files every update even if they
+                didn't want to.
+            </p>
+        </div>
+        <div class="homeLeftFloat">
+            <img class="homeImg" src="../static/images/HomePage/add_scrnshot.jpg">
         </div>
     </div>
 </div>
