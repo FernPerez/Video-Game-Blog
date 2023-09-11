@@ -123,6 +123,7 @@ def games():
 
     for game in gameList:
         filteredList.append(game)
+
     if request.method == 'POST':
         # data = request.form
         # print(data)
@@ -158,10 +159,14 @@ def games():
                 listLength -= 1 
             else:
                 i += 1
+        print(len(filteredList))
+        count = len(filteredList)
 
-        return render_template("games.html", games=filteredList, sort_by=sort_by, order=order) 
+        return render_template("games.html", games=filteredList, sort_by=sort_by, order=order, count=count) 
     
-    return render_template("games.html", games=gameList, sort_by="default", order="default")
+    print(len(filteredList))
+    count = len(filteredList)
+    return render_template("games.html", games=gameList, sort_by="default", order="default", count=count)
 
 @views.route("/games/<title>", methods = ["GET", "POST"])
 def game(title):

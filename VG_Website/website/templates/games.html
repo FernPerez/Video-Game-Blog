@@ -116,6 +116,7 @@
     <button class="btn btn-primary" id="reset">Reset</button>
 </div>
 <div class="subContainerDiv">
+    <h6>Displaying {{ count }} results:</h6>
     <div class="gameGridContainer">
         {% if sort_by == "default" and order == "default" %}
             {% for game in games | sort(attribute='title', reverse=False) %}
