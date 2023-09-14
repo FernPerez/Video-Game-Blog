@@ -1,7 +1,8 @@
 from flask import Blueprint, render_template, request, flash, current_app, redirect, url_for
-from .models import Game
+from .models import User, Game
 from . import db
 from werkzeug.utils import secure_filename
+from werkzeug.security import generate_password_hash, check_password_hash
 import uuid as uuid
 import os
 from datetime import datetime
@@ -16,6 +17,45 @@ def home():
 @views.route('/about', methods=["GET"])
 def about():
     return render_template("about.html")
+
+@views.route('/sign_up', methods=["GET", "POST"])
+def sign_up():
+    if request.method == "POST":
+        email = request.form.get('email')
+        password1 = request.form.get('password1')
+        password2 = request.form.get('password2')
+
+        #Check validity of inputs
+        if len(email) <= 4:
+            flash("Email must be greater than  characters.", category='error')
+        elif len(password1) <= 7:
+            flash("Password must be greater than 7 characters.", category='error')
+        elif password1 != password2:
+            flash("Passwords do not match.", category='error')
+        else:
+            new_user = User(
+                email = email,
+                password = generate_password_hash(password1, method='sha256')
+            )
+
+            try:
+                db.session.add(new_user)
+                db.session.commit()
+                flash("User created!", category='success')
+                return redirect(url_for('views.home'))
+            except:
+                flash("Something went wrong...", category="error")
+
+
+    return render_template("sign_up.html")
+
+@views.route('/login', methods=["GET", "POST"])
+def login():
+    return render_template("login.html", boolean=True)
+
+@views.route('/logout', methods=["GET"])
+def logout():
+    return redirect(url_for("views.home"))
 
 @views.route('/add-game', methods=["GET", "POST"])
 def addGame():
