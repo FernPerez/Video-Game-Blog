@@ -4,7 +4,7 @@ from os import path
 from flask_migrate import Migrate
 
 db = SQLAlchemy()
-DB_NAME = "database.db"
+DB_NAME = "public_database.db"
 
 def create_app():
     app = Flask(__name__)
