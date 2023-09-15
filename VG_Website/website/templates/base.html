@@ -530,16 +530,19 @@
                     <a class="nav-item nav-link navBlock" id="home" href="/" style="padding-left: 20px; padding-right:20px">Home</a>
                     <div class="navDivLine"></div>
                     <a class="nav-item nav-link navBlock" id="about" href="/about" style="padding-left: 20px; padding-right:20px">About Me</a>
-                    <div class="navDivLine"></div>
-                    <a class="nav-item nav-link navBlock" id="addGame" href="/add-game" style="padding-left: 20px; padding-right:20px">Add Game</a>
-                    <div class="navDivLine"></div>
-                    <a class="nav-item nav-link navBlock" id="Games" href="/games" style="padding-left: 20px; padding-right:20px">Games</a>
-                    <div class="navDivLine"></div>
-                    <a class="nav-item nav-link navBlock" id="Log_In" href="/login" style="padding-left: 20px; padding-right:20px">Log In</a>
-                    <div class="navDivLine"></div>
-                    <a class="nav-item nav-link navBlock" id="Sign_Up" href="/sign_up" style="padding-left: 20px; padding-right:20px">Sign Up</a>
-                    <div class="navDivLine"></div>
-                    <a class="nav-item nav-link navBlock" id="Log_Out" href="/logout" style="padding-left: 20px; padding-right:20px">Log Out</a>
+                    {% if user.is_authenticated %}
+                        <div class="navDivLine"></div>
+                        <a class="nav-item nav-link navBlock" id="addGame" href="/add-game" style="padding-left: 20px; padding-right:20px">Add Game</a>
+                        <div class="navDivLine"></div>
+                        <a class="nav-item nav-link navBlock" id="Games" href="/games" style="padding-left: 20px; padding-right:20px">Games</a>
+                        <div class="navDivLine"></div>
+                        <a class="nav-item nav-link navBlock" id="Log_Out" href="/auth/logout" style="padding-left: 20px; padding-right:20px">Log Out</a>
+                    {% else %}
+                        <div class="navDivLine"></div>
+                        <a class="nav-item nav-link navBlock" id="Log_In" href="/auth/login" style="padding-left: 20px; padding-right:20px">Log In</a>
+                        <div class="navDivLine"></div>
+                        <a class="nav-item nav-link navBlock" id="Sign_Up" href="/auth/sign_up" style="padding-left: 20px; padding-right:20px">Sign Up</a>
+                    {% endif %}
                 </div>
             </div>
         </nav>

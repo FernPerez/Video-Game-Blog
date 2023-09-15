@@ -1,63 +1,27 @@
 from flask import Blueprint, render_template, request, flash, current_app, redirect, url_for
-from .models import User, Game
+from .models import Game
 from . import db
 from werkzeug.utils import secure_filename
-from werkzeug.security import generate_password_hash, check_password_hash
 import uuid as uuid
 import os
 from datetime import datetime
 import json
+from flask_login import login_required, current_user
 
 views = Blueprint('views', __name__)
 
 @views.route('/', methods=["GET"])
 def home():
-    return render_template("home.html")
+    return render_template("home.html", user=current_user)
 
 @views.route('/about', methods=["GET"])
 def about():
-    return render_template("about.html")
-
-@views.route('/sign_up', methods=["GET", "POST"])
-def sign_up():
-    if request.method == "POST":
-        email = request.form.get('email')
-        password1 = request.form.get('password1')
-        password2 = request.form.get('password2')
-
-        #Check validity of inputs
-        if len(email) <= 4:
-            flash("Email must be greater than  characters.", category='error')
-        elif len(password1) <= 7:
-            flash("Password must be greater than 7 characters.", category='error')
-        elif password1 != password2:
-            flash("Passwords do not match.", category='error')
-        else:
-            new_user = User(
-                email = email,
-                password = generate_password_hash(password1, method='sha256')
-            )
-
-            try:
-                db.session.add(new_user)
-                db.session.commit()
-                flash("User created!", category='success')
-                return redirect(url_for('views.home'))
-            except:
-                flash("Something went wrong...", category="error")
+    return render_template("about.html", user=current_user)
 
 
-    return render_template("sign_up.html")
-
-@views.route('/login', methods=["GET", "POST"])
-def login():
-    return render_template("login.html", boolean=True)
-
-@views.route('/logout', methods=["GET"])
-def logout():
-    return redirect(url_for("views.home"))
 
 @views.route('/add-game', methods=["GET", "POST"])
+@login_required
 def addGame():
     data = request.form
     if request.method == 'POST':
@@ -139,7 +103,6 @@ def addGame():
                 description = description,
                 score = score,
                 gameCover = gameCoverName,
-                gameMusic = gameMusicName
             )
             if gameCover != None:
                 gameCover.save(os.path.join(current_app.config["UPLOAD_FOLDER"], f'images/{gameCoverName}'))
@@ -154,9 +117,10 @@ def addGame():
 
 
 
-    return render_template("addGame.html")
+    return render_template("addGame.html", user=current_user)
 
 @views.route("/games", methods=["GET", "POST"])
+@login_required
 def games():
     gameList = Game.query
     filteredList = []
@@ -202,21 +166,23 @@ def games():
         print(len(filteredList))
         count = len(filteredList)
 
-        return render_template("games.html", games=filteredList, sort_by=sort_by, order=order, count=count) 
+        return render_template("games.html", games=filteredList, sort_by=sort_by, order=order, count=count, user=current_user) 
     
     print(len(filteredList))
     count = len(filteredList)
-    return render_template("games.html", games=gameList, sort_by="default", order="default", count=count)
+    return render_template("games.html", games=gameList, sort_by="default", order="default", count=count, user=current_user)
 
 @views.route("/games/<title>", methods = ["GET", "POST"])
+@login_required
 def game(title):
     game = Game.query.filter_by(title=title).first_or_404()
     if request.method == "POST":
         return redirect(url_for('views.updateGame', title=game.title))
 
-    return render_template('game.html', game=game)
+    return render_template('game.html', game=game, user=current_user)
 
 @views.route("/games/<title>/update", methods = ["GET", "POST"])
+@login_required
 def updateGame(title):
     gameToUpdate = Game.query.filter_by(title=title).first_or_404()
     print(gameToUpdate.gameMusic)
@@ -294,13 +260,13 @@ def updateGame(title):
                 newGameCoverName = str(uuid.uuid1()) + "_" + newGameCoverName
                 gameToUpdate.gameCover = newGameCoverName
 
-            print(request.files.get('gameMusic').filename)
-            if request.files.get('gameMusic') and request.files.get('gameMusic').filename != gameToUpdate.gameMusic:
-                print("test2")
-                newGameMusicName = request.files.get('gameMusic').filename
-                newGameMusicName = secure_filename(newGameMusicName)
-                newGameMusicName = str(uuid.uuid1()) + "_" + newGameMusicName
-                gameToUpdate.gameMusic = newGameMusicName        
+            # print(request.files.get('gameMusic').filename)
+            # if request.files.get('gameMusic') and request.files.get('gameMusic').filename != gameToUpdate.gameMusic:
+            #     print("test2")
+            #     newGameMusicName = request.files.get('gameMusic').filename
+            #     newGameMusicName = secure_filename(newGameMusicName)
+            #     newGameMusicName = str(uuid.uuid1()) + "_" + newGameMusicName
+            #     gameToUpdate.gameMusic = newGameMusicName        
 
             # Save new files
             try:
@@ -316,7 +282,7 @@ def updateGame(title):
                 flash("Error", category="error")
 
     genres = [gameToUpdate.genre1, gameToUpdate.genre2, gameToUpdate.genre3]
-    return render_template('update_game.html', game=gameToUpdate, genres=json.dumps(genres))
+    return render_template('update_game.html', game=gameToUpdate, genres=json.dumps(genres), user=current_user)
 
 # Functions below allow renaming an entry in the db if it has no title.
 

@@ -3,6 +3,7 @@ from flask_login import UserMixin
 
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(150), unique=True)
     email = db.Column(db.String(150), unique=True)
     password = db.Column(db.String(150))
     games = db.relationship('Game')
@@ -24,4 +25,3 @@ class Game(db.Model):
     description = db.Column(db.String(5000), nullable=True)
     score = db.Column(db.Float, nullable=False)
     gameCover = db.Column(db.String(), unique=True, nullable=True)
-    gameMusic = db.Column(db.String(), nullable=True)
