@@ -14,4 +14,4 @@
 .flaskenv
 
 # pycache
-.pyc
+.cpython-311.pyc
