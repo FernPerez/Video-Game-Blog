@@ -1,9 +1,6 @@
 {% extends "base.html" %}
 {% block title %}{{ game.title }}{% endblock %}
 {% block content %}
-{% if game.gameMusic %}
-    <audio id="gameMusic" src="../static/music/{{ game.gameMusic }}"></audio>
-{% endif %}
 <div class="mainGameContainer gameShrinkAnim">
     <div class="mainGameDetails">
         <div class="TitleDiv titleSlideAnim">
@@ -31,9 +28,9 @@
             </div>
             <div class="gameCoverContainer">
                 {% if game.gameCover %}
-                    <img src="../static/images/{{ game.gameCover }}" class="dashboard">
+                    <img src="/static/images/Public_Imgs/{{ game.gameCover }}" class="dashboard">
                 {% else %}
-                    <img src="../static/images/placeholder.png" class="dashboard">
+                    <img src="/static/images/placeholder.png" class="dashboard">
                 {% endif %}
             </div>
             <div class="detailDiv">

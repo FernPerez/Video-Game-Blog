@@ -23,6 +23,10 @@ def about():
 @views.route('/add-game', methods=["GET", "POST"])
 @login_required
 def addGame():
+    try:
+        print(current_user.id)
+    except:
+        print("Error")
     data = request.form
     if request.method == 'POST':
         title = request.form.get('title')
@@ -37,8 +41,7 @@ def addGame():
         dateFinished = request.form.get('dateFinished')
         description = request.form.get('description')
         score = request.form.get('score')
-        gameCover = request.files.get('gameCover')
-        gameMusic = request.files.get('gameMusic')
+        gameCover = request.form.get('gameCover')
 
         # Check validity of inputs and flash messages
         if len(title) < 1:
@@ -74,23 +77,19 @@ def addGame():
                 genre2 = ''
             if genre3 == 'N/A':
                 genre3 = ''
-            if gameCover.filename == '':
-                gameCover = None
-                gameCoverName = None
-            else:
-                gameCoverName = secure_filename(gameCover.filename)
-                gameCoverName = str(uuid.uuid1()) + "_" + gameCoverName
-
-            if gameMusic.filename == '':
-                gameMusic = None
-                gameMusicName = None
-            else:
-                gameMusicName = secure_filename(gameMusic.filename)
-                gameMusicName = str(uuid.uuid1()) + "_" + gameMusicName
+            # if gameCover.filename == '':
+            #     gameCover = None
+            #     gameCoverName = None
+            # else:
+            #     gameCoverName = secure_filename(gameCover.filename)
+            #     gameCoverName = str(uuid.uuid1()) + "_" + gameCoverName
 
             #add game to db
+            gameCover = gameCover + ".jpg"
+
             new_game = Game(
                 title = title,
+                user_id = current_user.id,
                 platforms = platforms,
                 series = series,
                 franchise = franchise,
@@ -102,12 +101,8 @@ def addGame():
                 dateFinished = dateFinished,
                 description = description,
                 score = score,
-                gameCover = gameCoverName,
+                gameCover = gameCover
             )
-            if gameCover != None:
-                gameCover.save(os.path.join(current_app.config["UPLOAD_FOLDER"], f'images/{gameCoverName}'))
-            if gameMusic != None:
-                gameMusic.save(os.path.join(current_app.config["UPLOAD_FOLDER"], f'music/{gameMusicName}'))
             try:
                 db.session.add(new_game)
                 db.session.commit()
@@ -122,7 +117,7 @@ def addGame():
 @views.route("/games", methods=["GET", "POST"])
 @login_required
 def games():
-    gameList = Game.query
+    gameList = Game.query.filter_by(user_id=current_user.id)
     filteredList = []
 
     for game in gameList:
@@ -172,18 +167,18 @@ def games():
     count = len(filteredList)
     return render_template("games.html", games=gameList, sort_by="default", order="default", count=count, user=current_user)
 
-@views.route("/games/<title>", methods = ["GET", "POST"])
+@views.route("/<username>/games/<title>", methods = ["GET", "POST"])
 @login_required
-def game(title):
+def game(username, title):
     game = Game.query.filter_by(title=title).first_or_404()
     if request.method == "POST":
-        return redirect(url_for('views.updateGame', title=game.title))
+        return redirect(url_for('views.updateGame', title=game.title, user=current_user, username=username))
 
     return render_template('game.html', game=game, user=current_user)
 
-@views.route("/games/<title>/update", methods = ["GET", "POST"])
+@views.route("/<username>/games/<title>/update", methods = ["GET", "POST"])
 @login_required
-def updateGame(title):
+def updateGame(username, title):
     gameToUpdate = Game.query.filter_by(title=title).first_or_404()
     print(gameToUpdate.gameMusic)
     if request.method == "POST":
@@ -277,7 +272,7 @@ def updateGame(title):
 
                 db.session.commit()
                 flash("Success!", category="success")
-                return redirect(url_for('views.game', title=gameToUpdate.title))
+                return redirect(url_for('views.game', title=gameToUpdate.title, user=current_user))
             except:
                 flash("Error", category="error")
 

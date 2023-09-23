@@ -120,8 +120,8 @@
     <div class="gameGridContainer">
         {% if sort_by == "default" and order == "default" %}
             {% for game in games | sort(attribute='title', reverse=False) %}
-                <div class="gameGridItem" onclick="window.location='/games/{{ game.title }}'">
-                    <img class = "gameGridImage" src="../static/images/{{ game.gameCover }}">
+                <div class="gameGridItem" onclick="window.location='/{{ user.username }}/games/{{ game.title }}'">
+                    <img class = "gameGridImage" src="../static/images/Public_Imgs/{{ game.gameCover }}">
                     <div class="gameGridTitle">
                         <h5>{{ game.title }}</h5>
                     </div>
@@ -129,8 +129,8 @@
             {% endfor %} 
         {% elif order == "asc" %}
             {% for game in games | sort(attribute=sort_by, reverse=False) %}
-                <div class="gameGridItem" onclick="window.location='/games/{{ game.title }}'">
-                    <img class = "gameGridImage" src="../static/images/{{ game.gameCover }}">
+                <div class="gameGridItem" onclick="window.location='/{{ user.username }}/games/{{ game.title }}'">
+                    <img class = "gameGridImage" src="../static/images/Public_Imgs/{{ game.gameCover }}">
                     <div class="gameGridTitle">
                         <h5>{{ game.title }}</h5>
                     </div>
@@ -139,7 +139,7 @@
         {% else %}
             {% for game in games | sort(attribute=sort_by, reverse=True) %}
                 <div class="gameGridItem" onclick="window.location='/games/{{ game.title }}'">
-                    <img class = "gameGridImage" src="../static/images/{{ game.gameCover }}">
+                    <img class = "gameGridImage" src="../static/images/Public_Imgs/{{ game.gameCover }}">
                     <div class="gameGridTitle">
                         <h5>{{ game.title }}</h5>
                     </div>
