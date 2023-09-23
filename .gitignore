@@ -12,3 +12,6 @@
 
 # flaskenv
 .flaskenv
+
+# pycache
+.pyc
