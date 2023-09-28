@@ -88,7 +88,7 @@ def addGame():
             if gameCover != "N/A":
                 gameCover = gameCover + ".jpg"
             else:
-                gameCover = ""
+                gameCover = "placeholder.png"
 
             new_game = Game(
                 title = title,
