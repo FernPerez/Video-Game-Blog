@@ -170,20 +170,20 @@ def games():
     count = len(filteredList)
     return render_template("games.html", games=gameList, sort_by="default", order="default", count=count, user=current_user)
 
-@views.route("/<username>/games/<title>", methods = ["GET", "POST"])
+@views.route("/<username>/games/<id>", methods = ["GET", "POST"])
 @login_required
-def game(username, title):
-    game = Game.query.filter_by(title=title).first_or_404()
+def game(username, id):
+    game = Game.query.filter_by(id=id).first_or_404()
     if request.method == "POST":
-        return redirect(url_for('views.updateGame', title=game.title, user=current_user, username=username))
+        return redirect(url_for('views.updateGame', id=game.id, user=current_user, username=username))
 
     return render_template('game.html', game=game, user=current_user)
 
-@views.route("/<username>/games/<title>/update", methods = ["GET", "POST"])
+@views.route("/<username>/games/<id>/update", methods = ["GET", "POST"])
 @login_required
-def updateGame(username, title):
-    gameToUpdate = Game.query.filter_by(title=title).first_or_404()
-    print(gameToUpdate.gameMusic)
+def updateGame(username, id):
+    gameToUpdate = Game.query.filter_by(id=id).first_or_404()
+    print(gameToUpdate.gameCover)
     if request.method == "POST":
         newTitle = request.form.get("title")
         newPlatforms = request.form.get("platforms")
@@ -197,6 +197,7 @@ def updateGame(username, title):
         newDF = request.form.get('dateFinished')
         newDesc = request.form.get('description')
         newScore = request.form.get('score')
+        newGameCover = request.form.get('gameCover')
 
         # Check validity of inputs and flash messages
         if len(newTitle) < 1:
@@ -233,6 +234,10 @@ def updateGame(username, title):
                 newGenre2 = ''
             if newGenre3 == 'N/A':
                 newGenre3 = ''
+            if newGameCover != 'N/A':
+                newGameCover = newGameCover + ".jpg"
+            else:
+                newGameCover = "placeholder.png"
 
 
             # Update values
@@ -248,15 +253,14 @@ def updateGame(username, title):
             gameToUpdate.dateFinished = newDF
             gameToUpdate.description = newDesc
             gameToUpdate.score = newScore
+            gameToUpdate.gameCover = newGameCover
 
             # Check if game cover or music has been updated, skip if not
-            newGameCoverName = ''
-            newGameMusicName = ''
-            if request.files.get('gameCover') and request.files.get('gameCover').filename != gameToUpdate.gameCover:
-                newGameCoverName = request.files.get('gameCover').filename
-                newGameCoverName = secure_filename(newGameCoverName)
-                newGameCoverName = str(uuid.uuid1()) + "_" + newGameCoverName
-                gameToUpdate.gameCover = newGameCoverName
+            # if request.files.get('gameCover') and request.files.get('gameCover').filename != gameToUpdate.gameCover:
+            #     newGameCoverName = request.files.get('gameCover').filename
+            #     newGameCoverName = secure_filename(newGameCoverName)
+            #     newGameCoverName = str(uuid.uuid1()) + "_" + newGameCoverName
+            #     gameToUpdate.gameCover = newGameCoverName
 
             # print(request.files.get('gameMusic').filename)
             # if request.files.get('gameMusic') and request.files.get('gameMusic').filename != gameToUpdate.gameMusic:
@@ -268,19 +272,19 @@ def updateGame(username, title):
 
             # Save new files
             try:
-                if newGameCoverName != '':
-                    request.files.get('gameCover').save(os.path.join(current_app.config["UPLOAD_FOLDER"], f'images/{newGameCoverName}'))
-                if newGameMusicName != '':
-                    request.files.get('gameMusic').save(os.path.join(current_app.config["UPLOAD_FOLDER"], f'music/{newGameMusicName}'))
+                # if newGameCoverName != '':
+                #     request.files.get('gameCover').save(os.path.join(current_app.config["UPLOAD_FOLDER"], f'images/{newGameCoverName}'))
+                # if newGameMusicName != '':
+                #     request.files.get('gameMusic').save(os.path.join(current_app.config["UPLOAD_FOLDER"], f'music/{newGameMusicName}'))
 
                 db.session.commit()
                 flash("Success!", category="success")
-                return redirect(url_for('views.game', title=gameToUpdate.title, user=current_user))
+                return redirect(url_for('views.game', id=gameToUpdate.id, user=current_user, username=username))
             except:
                 flash("Error", category="error")
 
     genres = [gameToUpdate.genre1, gameToUpdate.genre2, gameToUpdate.genre3]
-    return render_template('update_game.html', game=gameToUpdate, genres=json.dumps(genres), user=current_user)
+    return render_template('update_game.html', game=gameToUpdate, genres=json.dumps(genres), user=current_user, username=username)
 
 # Functions below allow renaming an entry in the db if it has no title.
 

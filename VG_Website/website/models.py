@@ -12,7 +12,7 @@ class User(db.Model, UserMixin):
 class Game(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    title = db.Column(db.String(200), unique=True, nullable=False)
+    title = db.Column(db.String(200), nullable=False)
     platforms = db.Column(db.String(300), nullable=False)
     series = db.Column(db.String(200), nullable=True)
     franchise = db.Column(db.String(200), nullable=True)
@@ -24,4 +24,4 @@ class Game(db.Model):
     dateFinished = db.Column(db.Date, nullable=True)
     description = db.Column(db.String(5000), nullable=True)
     score = db.Column(db.Float, nullable=False)
-    gameCover = db.Column(db.String(), unique=True, nullable=True)
+    gameCover = db.Column(db.String(), nullable=True)

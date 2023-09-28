@@ -35,14 +35,14 @@ def sign_up():
             new_user = User(
                 email = email,
                 username = username,
-                password = generate_password_hash(password1, method='sha256')
+                password = generate_password_hash(password1, method='scrypt')
             )
 
             try:
                 db.session.add(new_user)
                 db.session.commit()
                 flash("User created!", category='success')
-                login_user(user, remember=True)
+                login_user(new_user, remember=True)
                 return redirect(url_for('views.home'))
             except:
                 flash("Something went wrong...", category="error")
