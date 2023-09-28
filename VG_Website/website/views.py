@@ -85,7 +85,10 @@ def addGame():
             #     gameCoverName = str(uuid.uuid1()) + "_" + gameCoverName
 
             #add game to db
-            gameCover = gameCover + ".jpg"
+            if gameCover != "N/A":
+                gameCover = gameCover + ".jpg"
+            else:
+                gameCover = ""
 
             new_game = Game(
                 title = title,
