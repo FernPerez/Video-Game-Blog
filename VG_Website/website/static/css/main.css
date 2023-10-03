@@ -1,0 +1,497 @@
+
+@keyframes zoom {
+    0% {transform: scale(1);}
+    100% {transform: scale(1.015);}
+}
+
+@keyframes slideFadeUp {
+    0% {transform: translateY(100%);}
+    100% {transform: translateY(0%);}
+}
+@keyframes descSlide {
+    0% {transform: translateY(100vh);}
+    100% {transform: translateY(0%);}
+}
+@keyframes shrink {
+    0% {transform: scale(120%);}
+    100% {transform: scale(100%);}
+}
+@keyframes slideFadeRight {
+    0% {transform: translateX(-100%);}
+    100% {transform: translateX(0%);}
+}
+@keyframes slideFadeLeft {
+    0% {transform: translateX(100%);}
+    100% {transform: translateX(0%);}
+}
+@keyframes slideHomePic {
+    0% {transform: translateX(250%); opacity: 0;}
+    100% {transform: translateX(0%); opacity: 1;}
+}
+
+.navDivLine {
+    height: 85%;
+    width: 1px;
+    background-color: #942842;
+}
+.navBlock:hover {
+    background-color: #942842;
+    height: 105%;
+    border-bottom-left-radius: 7px;
+    border-bottom-right-radius: 7px;
+}
+.gamesSlideAnim {
+    animation: .3s ease-out 0s slideFadeUp forwards;
+}
+.gameShrinkAnim {
+    animation: 0.4s ease-out 0s shrink;
+}
+.titleSlideAnim {
+    animation: .5s ease-out 0s slideFadeRight forwards;
+}
+.scoreSlideAnim {
+    animation: .55s ease-out 0s slideFadeLeft backwards;
+}
+.gameCoverAnim {
+    animation: .5s ease-out 0s slideFadeLeft backwards;
+}
+.descAnim {
+    animation: .7s ease-out 0s descSlide forwards;
+}
+.addGameAnim {
+    animation: .4s ease-out 0s slideFadeRight forwards;
+}
+.homeSlide {
+    animation: .7s ease-out 0s slideFadeUp forwards;
+}
+.homePicSlide {
+    animation: .5s ease-out 0s slideHomePic forwards;
+}
+img.dashboard {
+    min-width: 400px;
+    min-height: 500px;
+    max-width: 400px;
+    max-height: 500px;     
+    margin-top: 0px;           
+}
+body.background {
+    background-color: rgb(56, 56, 56);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 90%;
+    height: 100%;
+    margin: 0px;
+    background-attachment: fixed;
+}
+div.containerDiv {
+    min-height: 100%;
+    max-width: 85%;
+    align-self: center;
+    margin-bottom: 15px;
+    margin-top: 20px;
+}
+h1 {
+    color: white;
+}
+.homePic {
+    margin-top: 150px;
+    border-radius: 50%;
+    border: solid #942842;
+    width: 300px;
+    height: 300px;
+    box-shadow: 3px 3px 3px 3px black;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: -15px;
+    position: relative;
+    z-index: 1;
+}
+.centralized {
+    text-align: center;
+}
+.homeInnerContent {
+    padding: 70px;
+    padding-left: 150px;
+    padding-right: 150px;
+    padding-top: 0px;
+    margin-top: 50px;
+    width: 100%;
+    overflow: hidden;
+}
+.homeLeftFloat {
+    width: 50%;
+    float: left;
+    padding-top: 20px;
+    padding-right: 30px;
+    margin-bottom: 0px;
+    min-height: 550px;
+}
+.homeImg {
+    min-width: 100%;
+    min-height: 500px;
+    max-width: 100%;
+    max-height: 500px;     
+    margin-top: 0px;    
+    border: solid #942842;
+    border-radius: 10px;
+    box-shadow: 2px 2px 2px 2px black ; 
+}
+.homeContainerDiv {
+    background-color: rgb(29, 27, 27);
+    opacity: 0.95;
+    min-width: 100%;
+    height: fit-content;
+    padding: 30px;
+    color: white;
+    box-shadow: 5px 5px 5px 5px black;
+    margin-left: -10%;
+    margin-top: 0px;
+    margin-bottom: -10px;
+    position: absolute;
+    z-index: 0;
+}
+.aboutDiv {
+    background-color: rgb(29, 27, 27);
+    opacity: 0.95;
+    min-width: 75%;
+    max-width: 75%;
+    height: fit-content;
+    padding: 30px;
+    color: white;
+    box-shadow: 5px 5px 5px 5px black;
+    margin-left: 75px;
+    margin-top: 0px;
+    margin-bottom: -10px;
+    position: absolute;
+    z-index: 0;
+    border-radius: 25px;
+}
+.aboutInner {
+    padding: 70px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 10px;
+    margin-top: 50px;
+    width: 90%;
+    overflow: hidden;
+}
+.aboutThreeQ {
+    width: 75%;
+    float: left;
+    padding-top: 0px;
+    padding-left: 10px;
+    padding-right: 80px;
+    margin-bottom: 0px;
+    min-height: 550px;
+    overflow-wrap: break-word;
+}
+.aboutOneQ {
+    width: 25%;
+    float: left;
+    padding-top: 0px;
+    padding-left: 10px;
+    padding-right: 10px;
+    margin-bottom: 0px;
+    min-height: 550px;
+    overflow-wrap: break-word;                
+}
+.aboutTwoQ {
+    width:45%;
+    float: right;
+    padding-top: 0px;
+    margin-left: 30px;
+    padding-right: 10px;
+    margin-bottom: -170px;
+    min-height: 550px;   
+}
+p {
+    overflow-wrap: break-word;
+    width: 100%;
+}
+.aboutImg {
+    min-width: 100%;
+    min-height: 100%;
+    max-width: 100%;
+    max-height: 100%;     
+    margin-top: 0px;    
+    border: solid #942842;
+    border-radius: 10px;
+    box-shadow: 2px 2px 2px 2px black ;
+}
+.aboutImgHalf {
+    min-width: 49%;
+    min-height: 325px;
+    max-width: 49%;
+    max-height: 325px;     
+    margin-top: 0px;    
+    border: solid #942842;
+    border-radius: 10px;
+    box-shadow: 2px 2px 2px 2px black ;
+    margin-bottom: 0%;
+    flex-wrap: wrap;
+}
+.aboutRow {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0 4px;
+}
+.aboutClmn {
+    flex: 33%;
+    max-width: 33%;
+    padding: 0 4px;
+}
+.aboutGridImg {
+    vertical-align: middle;     
+    margin-top: 8px;    
+    border: solid #942842;
+    border-radius: 10px;
+    box-shadow: 2px 2px 2px 2px black;
+    max-height: 1000px;
+    max-width: 100%;
+}
+.gamesSelectors {
+    background-color: #942842;
+    color: white;
+    width: 110px;
+    height: 33px;
+    font-size: small;
+    box-shadow: 2px 2px 2px 2px black;
+}
+option {
+    color: black;
+    background-color: rgb(255, 118, 125);
+    background-color: #b33b57;
+    color: white;
+}
+.float-container {
+    padding: 20px;
+    padding-top: 0px;
+    width: 100%;
+    overflow: hidden;
+}
+.float-child {
+    font-size: small;
+    width: 25%;
+    float: left;
+    padding: 20px;
+
+}
+.gameGridContainer {
+    display: grid;
+    grid-template-columns: auto auto auto auto auto auto;
+    background-color: rgb(202, 61, 5);
+    background-color: #942842;
+    gap: 10px;
+    padding: 10px;
+    border-radius: 10px;
+    overflow: hidden;
+}
+.gameGridItem {
+    padding: 5px;
+    background-color: rgb(78, 14, 41);
+    width: 240px;
+    height: 300px;
+    box-shadow: 2px 2px 2px 2px black;
+    cursor: pointer;
+    border-radius: 10px;
+}
+
+.zoomAnim {
+    width: 1000px;
+    padding: 5px;
+}
+
+.gameGridItem:hover {
+    animation: .2s ease-out 0s zoom forwards;
+}
+.gameGridImage {
+    min-width: 100%;
+    min-height: 85%;
+    max-width: 100%;
+    max-height: 85%;
+    padding: 0px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+.gameGridTitle {
+    margin: 0px;
+    min-width: 100%;
+    height: 15%;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    background-color: black;
+    color: white;
+    text-align: center;
+    overflow: hidden; 
+}
+.resetDiv {
+    display: inline-block;
+    white-space: nowrap;                
+}
+
+.subContainerDiv {
+    background-color: rgb(29, 27, 27);
+    border-radius: 25px;
+    opacity: 0.95;
+    min-width: 100%;
+    height: fit-content;
+    padding: 30px;
+    margin-bottom: 40px;
+    color: white;
+    border-radius: 25px;
+    box-shadow: 5px 5px 5px 5px black;
+}
+#reset {
+    margin-left: 50px;
+    background-color: #942842;
+    color: white;
+    border-color: #942842;
+}
+.divLine {
+    width: 90%;
+    height: 1px;
+    background-color: #942842;
+    margin-top: 10px;
+    margin-bottom: 15px;
+    margin-left: 0px;
+}
+.fullDivLine {
+    width: 100%;
+    height: 1px;
+    background-color: #942842;
+    margin-top: 10px;
+    margin-bottom: 15px;
+    margin-left: 0px;
+}
+.mainGameContainer {
+    background-color: rgb(29, 27, 27);
+    border-radius: 25px;
+    opacity: 0.95;
+    max-width: 80%;
+    height: fit-content;
+    padding: 30px;
+    margin: auto;
+    margin-bottom: 40px;
+    color: white;
+    border-radius: 25px;
+    box-shadow: 5px 5px 5px 5px black;
+}
+.mainGameDetails {
+    width: 100%;
+    overflow: hidden;
+}
+.TitleDiv {
+    width: 50%;
+    float: left;
+}
+.scoreDiv {
+    width: 50%;
+    float: right;
+    padding-left: 15%;
+}
+.gameContainer {
+    width: 100%;
+    overflow: hidden;
+}
+.gameInfoContainer {
+    width: 50%;
+    float: right;
+    display: flex;
+    flex-direction: column;
+    padding-left: 7%;
+    box-shadow: 10px 10px black;
+}
+.gameDescContainer {
+    width: 50%;
+    float: left;
+    padding-left: 0%;
+}
+.gameHeader {
+    width: 400px;
+    background-color: #942842;
+    color: white;
+    text-align: center;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    padding: 2%;
+}
+.gameCoverContainer {
+    width: 400px;
+}
+.detailDiv {
+    width: 400px;
+    background-color: #b33b57;
+    color: white;
+    padding: 1%;
+    text-align: center;
+}
+.detailSubDiv {
+    width: 400px;
+    color: white;
+    padding: 1%;
+    border-style: solid;
+    border-color: #942842;
+    border-width: 1px;
+}
+.detailKey {
+    float: left;
+    width: 25%;
+    padding-left: 3%;
+}
+.detailValue {
+    float: left;
+    width: 75%;
+    padding-left: 20%;
+}
+.updateBtn {
+    background-color: #942842;
+    border-color: #942842;
+}
+.addParamsContainer1 {
+    width: 100%;
+    overflow: hidden;
+}
+.addParamsContainerLeft {
+    float: left;
+    width: 33%;
+    padding-right: 20px;
+}
+.inputFull {
+    width: 100%;
+    margin-bottom: 10px;
+}
+.inputHalf {
+    width: 50%;
+}
+.dropdownFull {
+    width: 100%;
+    margin-bottom: 10px;
+}
+.dropdownHalf {
+    width: 50%;
+}
+.addParamsContainerDesc {
+    float: left;
+    width: 66.6%;
+    padding-right: 20px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+.addParamsContainerRest {
+    float: right;
+    width: 33.3%;
+    padding-top: 20px;
+    padding-left: 10px;
+    padding-bottom: 20px;
+}
+.descInput {
+    min-height: 180px;
+    
+}
+.scoreInput {
+    width: 15%;
+}
+.fileInput {
+    width: 100%;
+}

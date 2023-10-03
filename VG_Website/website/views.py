@@ -174,6 +174,9 @@ def games():
 @login_required
 def game(username, id):
     game = Game.query.filter_by(id=id).first_or_404()
+    if game.user_id != current_user.id:
+        flash("That game entry is not tied to this account. You are not allowed to view it.", category="error")
+        return redirect(url_for('views.home'))
     if request.method == "POST":
         return redirect(url_for('views.updateGame', id=game.id, user=current_user, username=username))
 
@@ -183,6 +186,9 @@ def game(username, id):
 @login_required
 def updateGame(username, id):
     gameToUpdate = Game.query.filter_by(id=id).first_or_404()
+    if gameToUpdate.user_id != current_user.id:
+        flash("That game entry is not tied to this account. You are not allowed to modify it.", category="error")
+        return redirect(url_for('views.home'))
     if request.method == "POST":
         newTitle = request.form.get("title")
         newPlatforms = request.form.get("platforms")
