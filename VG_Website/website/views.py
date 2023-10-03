@@ -183,7 +183,6 @@ def game(username, id):
 @login_required
 def updateGame(username, id):
     gameToUpdate = Game.query.filter_by(id=id).first_or_404()
-    print(gameToUpdate.gameCover)
     if request.method == "POST":
         newTitle = request.form.get("title")
         newPlatforms = request.form.get("platforms")
@@ -284,7 +283,8 @@ def updateGame(username, id):
                 flash("Error", category="error")
 
     genres = [gameToUpdate.genre1, gameToUpdate.genre2, gameToUpdate.genre3]
-    return render_template('update_game.html', game=gameToUpdate, genres=json.dumps(genres), user=current_user, username=username)
+    cover = gameToUpdate.gameCover[0:-4]
+    return render_template('update_game.html', game=gameToUpdate, genres=json.dumps(genres), cover=cover, user=current_user, username=username)
 
 # Functions below allow renaming an entry in the db if it has no title.
 
