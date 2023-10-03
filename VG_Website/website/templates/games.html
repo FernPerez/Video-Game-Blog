@@ -3,6 +3,7 @@
 {% block content %}
 <div class="subContainerDiv">
     <h1>My Games</h1>
+    <!-- Filters and sorters -->
     <form method="POST" id="filters">
         <label for="Search">Search:</label>
         <input 
@@ -118,6 +119,9 @@
 <div class="subContainerDiv">
     <h6>Displaying {{ count }} results:</h6>
     <div class="gameGridContainer">
+        <!-- This grid is populated by each new game that is added and meets the filter requirements -->
+        <!-- Depending on the sort_by and order selections, the grid is populated by different games in different orders -->
+        <!-- The default sorting is to sort alphabetically by title. -->
         {% if sort_by == "default" and order == "default" %}
             {% for game in games | sort(attribute='title', reverse=False) %}
                 <div class="gameGridItem" onclick="window.location='/{{ user.username }}/games/{{ game.id }}'">
@@ -127,6 +131,7 @@
                     </div>
                 </div>
             {% endfor %} 
+        <!-- Ascending order -->
         {% elif order == "asc" %}
             {% for game in games | sort(attribute=sort_by, reverse=False) %}
                 <div class="gameGridItem" onclick="window.location='/{{ user.username }}/games/{{ game.id }}'">
@@ -137,6 +142,7 @@
                 </div>
             {% endfor %} 
         {% else %}
+        <!-- Descending order -->
             {% for game in games | sort(attribute=sort_by, reverse=True) %}
                 <div class="gameGridItem" onclick="window.location='/games/{{ game.id }}'">
                     <img class = "gameGridImage" src="../static/images/Public_Imgs/{{ game.gameCover }}">
@@ -148,89 +154,11 @@
         {% endif %}    
     </div>
 </div>
+<script src="/static/js/games.js"></script>
 <script>
-    function search(ele) {
-        if(event.key == 'Enter'){
-            localStorage.setItem('searchParam', document.getElementById('searchbar').value);
-            document.getElementById("filters").submit();
-        };
-    };
-
-    document.getElementById('sorter').onchange = function() {
-        localStorage.setItem('selectedSort', document.getElementById('sorter').value);
-        document.getElementById("filters").submit();
-    };
-    document.getElementById('order').onchange = function() {
-        localStorage.setItem('selectedOrder', document.getElementById('order').value);
-        document.getElementById("filters").submit();
-    };
-    document.getElementById('platform_select').onchange = function() {
-        localStorage.setItem('selectedPlatform', document.getElementById('platform_select').value);
-        document.getElementById("filters").submit();
-    };
-    document.getElementById('franchise_select').onchange = function() {
-        localStorage.setItem('selectedFranchise', document.getElementById('franchise_select').value);
-        document.getElementById("filters").submit();
-    };
-    document.getElementById('series_select').onchange = function() {
-        localStorage.setItem('selectedSeries', document.getElementById('series_select').value);
-        document.getElementById("filters").submit();
-    };
-    document.getElementById('genre_select').onchange = function() {
-        localStorage.setItem('selectedGenre', document.getElementById('genre_select').value);
-        document.getElementById("filters").submit();
-    };
-    document.getElementById('reset').onclick = function() {
-        localStorage.setItem('searchParam', document.getElementById('searchbar').value = "");
-        localStorage.setItem('selectedSort', document.getElementById('sorter').value = "title");
-        localStorage.setItem('selectedOrder', document.getElementById('order').value = "asc");
-        localStorage.setItem('selectedPlatform', document.getElementById('platform_select').value = "All");
-        localStorage.setItem('selectedFranchise', document.getElementById('franchise_select').value = "All");
-        localStorage.setItem('selectedSeries', document.getElementById('series_select').value = "All");
-        localStorage.setItem('selectedGenre', document.getElementById('genre_select').value = "All");
-        document.getElementById("filters").submit()
-    };
-
     window.onload = function() {
-        const items = document.querySelectorAll('.gameGridItem');
-        var i = 0.3;
-        items.forEach(item => {          
-            item.style.animation = "slideFadeUp " + i + "s";
-            if(i <= 1){
-                i += 0.075;
-            };
-        })
-
-
-        if('{{ sort_by }}' != "default"){
-            document.getElementById("searchbar").value = localStorage.getItem('searchParam');
-            document.getElementById("order").value = localStorage.getItem('selectedOrder');
-            document.getElementById("sorter").value = localStorage.getItem('selectedSort');
-            document.getElementById("platform_select").value = localStorage.getItem('selectedPlatform');
-            document.getElementById("franchise_select").value = localStorage.getItem('selectedFranchise');
-            document.getElementById("series_select").value = localStorage.getItem('selectedSeries');
-            document.getElementById("genre_select").value = localStorage.getItem('selectedGenre');
-        }
-        else {
-            localStorage.setItem('searchParam', document.getElementById('searchbar').value = "");
-            localStorage.setItem('selectedSort', document.getElementById('sorter').value = "title");
-            localStorage.setItem('selectedOrder', document.getElementById('order').value = "asc");
-            localStorage.setItem('selectedPlatform', document.getElementById('platform_select').value = "All");
-            localStorage.setItem('selectedFranchise', document.getElementById('franchise_select').value = "All");
-            localStorage.setItem('selectedSeries', document.getElementById('series_select').value = "All");
-            localStorage.setItem('selectedGenre', document.getElementById('genre_select').value = "All");
-        };
-    };
-    setTimeout(function removeAnimations() {
-        const items = document.querySelectorAll(".gameGridItem")
-
-        items.forEach(item => {
-            item.style.animation = "";
-            
-        });
-    }, 1000);
-
-
+        main('{{ sort_by }}')
+    }
 </script>
 {% endblock %}
 

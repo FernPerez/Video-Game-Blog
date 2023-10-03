@@ -8,6 +8,7 @@
             <h5>Platforms: {{ game.platforms }}</h5>
             <h5 id="release">Release date: {{ game.releaseDate }}</h5>
             <h6>Genre(s): {{ game.genre1.replace('_', ' ') }}
+            <!-- Replace underscores in genres with spaces -->
             {% if game.genre2 != "" %}
             / {{ game.genre2.replace('_', ' ')  }}
             {% endif %}
@@ -27,6 +28,7 @@
                 <h4>{{ game.title }}</h4>
             </div>
             <div class="gameCoverContainer">
+                <!-- Display game cover if it exists. Otherwise use placeholder -->
                 {% if game.gameCover %}
                     <img src="/static/images/Public_Imgs/{{ game.gameCover }}" class="dashboard">
                 {% else %}
@@ -66,42 +68,14 @@
         <button class="btn btn-primary updateBtn">Update</button>
     </form>
 </div>
-
+<script src="/static/js/game.js"></script>
 <script>
     function sleep(ms) {
         return new Promise(resolve => setTimeout(resolve, ms));
     }
     window.onload = async function(){
-        convertDates();
+        convertDates('{{ game.releaseDate }}');
         await new Promise(r => setTimeout(r, 500));
-        document.getElementById("gameMusic").play();
     }
-    function convertDates() {
-        const months = ["January",
-                        "February", 
-                        "March", 
-                        "April",
-                        "May",
-                        "June",
-                        "July",
-                        "August",
-                        "September",
-                        "October",
-                        "November",
-                        "December"
-                    ];
-        var releaseDate = '{{ game.releaseDate }}';
-        var releaseMonth = parseInt(releaseDate.substring(5, 7));
-        releaseMonth = months[releaseMonth - 1];
-        var releaseDay = releaseDate.substring(8, 10);
-        if(releaseDay[0] == "0"){
-            releaseDay = releaseDay.replace("0", "");
-        }
-        releaseYear = releaseDate.substring(0, 4)
-        console.log(releaseMonth + " " + releaseDay + ", " + releaseYear);
-
-        document.getElementById("release").innerText = ("Release Date: " + releaseMonth + " " + releaseDay + ", " + releaseYear);
-    };
 </script>
-</div>
 {% endblock %}

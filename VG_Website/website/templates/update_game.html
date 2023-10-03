@@ -1,12 +1,6 @@
 {% extends "base.html" %}
 {% block title %}Update Game{% endblock %}
 {% block content %}
-
-<style>
-    body.background {
-        background-image: url(../../static/images/Main_Background.gif);  
-    }
-</style>
 <div class="subContainerDiv addGameAnim">
 <h1>Update {{ game.title }}</h1>
 <form method="POST" enctype="multipart/form-data">
@@ -197,33 +191,10 @@
     <br/><br/>
 </form>
 </div>
-
+<script src="/static/js/update_game.js"></script>
 <script type="text/javascript">
     window.onload = function() {
-
-        var genres = '{{ genres|tojson|safe }}';
-        var genres = genres.replaceAll('"', '');
-        var genres = genres.replaceAll('[', '');
-        var genres = genres.replaceAll(']', '');
-        var genres = genres.replaceAll(' ', '');
-        var genres = genres.split(',');
-
-        console.log(genres);
-
-        document.getElementById("genre1").value = genres[0];
-        if(genres[1] == '') {
-            document .getElementById("genre2").value = 'N/A';
-        }
-        else {
-            document.getElementById("genre2").value = genres[1];
-        }
-        if(genres[2] == '') {
-            document .getElementById("genre3").value = 'N/A';
-        }
-        else {
-            document.getElementById("genre3").value = genres[2];
-        }
-        document.getElementById("gameCover").value = '{{ cover }}'
+        main('{{ genres|tojson|safe }}', '{{ cover }}')
     };
 </script>
 {% endblock %}
