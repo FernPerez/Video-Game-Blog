@@ -20,6 +20,7 @@ When the user wants to add a game to their list, they need to go to the Add Game
 ## Planned New Features
 ### Major
 - Having series and franchise filters in games page populate given the user's current list of games. At the moment, it only uses some franchises and series I added, but if a user adds a game from a different one, they will not be able to filter by them.
+- Adjusting the front end and styling so it can look good on mobile as well as desktop.
 - Creating a game backlog/future games page. This one is pretty big as it would require some big changes to the database, but it is something I plan on adding at some point.
 
 ## Minor
